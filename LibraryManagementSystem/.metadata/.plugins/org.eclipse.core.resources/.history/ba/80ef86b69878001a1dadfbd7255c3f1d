@@ -1,0 +1,21 @@
+user=root
+password=root
+path=com.mysql.jdbc.Driver
+dburl=jdbc:mysql://localhost:3306/Library_management_system_db?user=root&password=root
+login=select emailid,password from library_users where emailid=? and password=?
+addBook=insert into book_info values(?,?,?,?,?)
+addUser=insert into library_users values(?,?,?,?,?,?,?)
+searchBook=select * from book_info where bookId=?
+updateBook=update book_info set bookName=? where bookId=? 
+getAllUsers=select * from library_users
+getAllBookInfo=select * from book_info
+removeBook=delete from book_info where bookId=?
+issueBook=insert into book_allotment values(?,?,?,?,?,?,?)
+bookRequest=insert into book_request (userid,bookid,username,bookname,status) values(?,?,?,?,?)
+showRequest=select * from book_request
+updatebook1=update book_request set status=? where bookid=?
+collectbookfromuser=update book_allotment set returnDate=? and fine=? where bookId=?
+issuebook1=delete from lms_books where bookid=? ANY (update lms_request set status=? where bookid=? ANY (insert into lms_bookallotment values(?,?,?,?,?,?,?)))
+approved=approved;
+notapproved=not approved;
+returned=returned;
