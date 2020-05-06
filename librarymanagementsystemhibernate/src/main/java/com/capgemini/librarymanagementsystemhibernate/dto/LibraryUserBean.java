@@ -26,7 +26,7 @@ public class LibraryUserBean implements Serializable {
 	private int noOfBooksBorrowed;
 	@Column
 	private double fine;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -82,7 +82,7 @@ public class LibraryUserBean implements Serializable {
 	public void setFine(double fine2) {
 		this.fine = fine2;
 	}
-//
-//	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
-//	private List<RequestBean> request;
+	//
+	// @ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
+	// private List<RequestBean> request;
 }

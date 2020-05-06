@@ -5,7 +5,7 @@ import com.capgemini.librarymanagementsystem.database.LibraryManagementSystemDat
 public class LmsController {
 	public static void main(String[] args) {
 		LibraryManagementSystemDataBase.addToDatabase();
-		LibraryManagementSystemUtility.lmsController();
+		LibraryManagementSystem.lmsController();
 		
 	}
 

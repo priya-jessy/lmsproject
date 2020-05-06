@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-
 import com.capgemini.librarymanagementsystem.dto.BookBean;
 import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
@@ -15,7 +14,7 @@ import com.capgemini.librarymanagementsystem.service.AdminServiceDAO;
 import com.capgemini.librarymanagementsystem.service.UserServiceDAO;
 import com.capgemini.librarymanagementsystem.validation.LibraryManagementSystemValidation;
 
-public class LibraryManagementSystemUtility {
+public class LibraryManagementSystem {
 
 	public static Scanner scanner = new Scanner(System.in);
 
@@ -517,226 +516,226 @@ public class LibraryManagementSystemUtility {
 				try {
 
 					UserBean userInfo = userService.login(userEmailId1, userPassword1);
-					if(userInfo!=null) {
-					System.out.println("User logged in");
-					do {
-						System.out.println("1. Changepassword");
-						System.out.println("2. Books in Library");
-						System.out.println("3. Search a Book");
-						System.out.println("4. Request a Book");
-						System.out.println("5. Return Book");
-						System.out.println("0. LogOut");
-						System.out.println("Enter your choice");
-						userChoice = checkChoice();
-						switch (userChoice) {
-						case 1:
-							System.out.println("Changing Password");
-							System.out.println("-----------------");
-							System.out.println("Enter User EmailId");
-							String userEmailId = scanner.next();
-							boolean validateByUserEmail = validation.validateByEmail(userEmailId);
-							while (!validateByUserEmail) {
-								try {
-									throw new LibraryManagementSystemException("Please enter valid Email Id");
-								} catch (LibraryManagementSystemException lmse) {
-									System.err.println(
-											"Please valid Email eg:abc@gmail.com,It should contain @gmail or @yahoo,.com or .org");
-									userEmailId = scanner.next();
-									if (validation.validateByEmail(userEmailId)) {
-										break;
+					if (userInfo != null) {
+						System.out.println("User logged in");
+						do {
+							System.out.println("1. Changepassword");
+							System.out.println("2. Books in Library");
+							System.out.println("3. Search a Book");
+							System.out.println("4. Request a Book");
+							System.out.println("5. Return Book");
+							System.out.println("0. LogOut");
+							System.out.println("Enter your choice");
+							userChoice = checkChoice();
+							switch (userChoice) {
+							case 1:
+								System.out.println("Changing Password");
+								System.out.println("-----------------");
+								System.out.println("Enter User EmailId");
+								String userEmailId = scanner.next();
+								boolean validateByUserEmail = validation.validateByEmail(userEmailId);
+								while (!validateByUserEmail) {
+									try {
+										throw new LibraryManagementSystemException("Please enter valid Email Id");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please valid Email eg:abc@gmail.com,It should contain @gmail or @yahoo,.com or .org");
+										userEmailId = scanner.next();
+										if (validation.validateByEmail(userEmailId)) {
+											break;
+										}
 									}
 								}
-							}
-							System.out.println("Enter old password");
-							String oldPassword = scanner.next();
-							boolean validateByOldPassword = validation.passwordValidation(oldPassword);
-							while (!validateByOldPassword) {
-								try {
-									throw new LibraryManagementSystemException("Please enter valid password");
-								} catch (LibraryManagementSystemException lmse) {
-									System.err.println(
-											"Please enter valid password,It should contain 8-15 characters,atleast one uppercase,lowercase and atleast one special charater");
-									oldPassword = scanner.next();
-									if (validation.passwordValidation(oldPassword)) {
-										break;
+								System.out.println("Enter old password");
+								String oldPassword = scanner.next();
+								boolean validateByOldPassword = validation.passwordValidation(oldPassword);
+								while (!validateByOldPassword) {
+									try {
+										throw new LibraryManagementSystemException("Please enter valid password");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please enter valid password,It should contain 8-15 characters,atleast one uppercase,lowercase and atleast one special charater");
+										oldPassword = scanner.next();
+										if (validation.passwordValidation(oldPassword)) {
+											break;
+										}
 									}
 								}
-							}
-							System.out.println("Enter new password");
-							String newPassword = scanner.next();
-							boolean validateByNewPassword = validation.passwordValidation(newPassword);
-							while (!validateByNewPassword) {
-								try {
-									throw new LibraryManagementSystemException("Please enter valid password");
-								} catch (LibraryManagementSystemException lmse) {
-									System.err.println(
-											"Please enter valid password,It should contain 8-15 characters,atleast one uppercase,lowercase and atleast one special charater");
-									newPassword = scanner.next();
-									if (validation.passwordValidation(newPassword)) {
-										break;
+								System.out.println("Enter new password");
+								String newPassword = scanner.next();
+								boolean validateByNewPassword = validation.passwordValidation(newPassword);
+								while (!validateByNewPassword) {
+									try {
+										throw new LibraryManagementSystemException("Please enter valid password");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please enter valid password,It should contain 8-15 characters,atleast one uppercase,lowercase and atleast one special charater");
+										newPassword = scanner.next();
+										if (validation.passwordValidation(newPassword)) {
+											break;
+										}
 									}
 								}
-							}
-							try {
-								boolean changedPassword = userService.changePassword(userEmailId, oldPassword,
-										newPassword);
-								if(changedPassword) {
-								System.out.println("Password changed successfully");
-								}
-							} catch (LibraryManagementSystemException lmse) {
-								System.out.println(lmse.getMessage());
-							}
-							break;
-
-						case 2:
-							List<BookBean> allBooks = service.getAllBooks();
-
-							System.out.println("Books present in library are :");
-							System.out.println(String.format("%-20s %-40s %-20s %-20s %-20s %-20s", "BOOKID",
-									"BOOKNAME", "AUTHOR", "PUBLISHER", "CATEGORY", "AVALIABLE"));
-							for (BookBean book : allBooks) {
-
-								System.out.println(String.format("%-20s %-40s %-20s %-20s %-20s %-20s",
-										book.getBookId(), book.getBookName(), book.getAuthorName(), book.getPublisher(),
-										book.getCategory(), book.isAvaliable()));
-
-							}
-							System.out.println("No books present in library");
-
-							break;
-						case 3:
-							System.out.println("Search a Book");
-							System.out.println("Enter book Id it should contain 3 digits");
-							String searchBookId = scanner.next();
-							boolean validateByBookId = validation.idValidation(searchBookId);
-							while (!validateByBookId) {
 								try {
-									throw new LibraryManagementSystemException("Please enter valid data");
+									boolean changedPassword = userService.changePassword(userEmailId, oldPassword,
+											newPassword);
+									if (changedPassword) {
+										System.out.println("Password changed successfully");
+									}
 								} catch (LibraryManagementSystemException lmse) {
-									System.err
-											.println("Please enter proper book id,It should contain exactly 3 digits");
-									searchBookId = scanner.next();
-									if (validation.idValidation(searchBookId)) {
-										break;
+									System.out.println(lmse.getMessage());
+								}
+								break;
+
+							case 2:
+								List<BookBean> allBooks = service.getAllBooks();
+
+								System.out.println("Books present in library are :");
+								System.out.println(String.format("%-20s %-40s %-20s %-20s %-20s %-20s", "BOOKID",
+										"BOOKNAME", "AUTHOR", "PUBLISHER", "CATEGORY", "AVALIABLE"));
+								for (BookBean book : allBooks) {
+
+									System.out.println(String.format("%-20s %-40s %-20s %-20s %-20s %-20s",
+											book.getBookId(), book.getBookName(), book.getAuthorName(),
+											book.getPublisher(), book.getCategory(), book.isAvaliable()));
+
+								}
+								System.out.println("No books present in library");
+
+								break;
+							case 3:
+								System.out.println("Search a Book");
+								System.out.println("Enter book Id it should contain 3 digits");
+								String searchBookId = scanner.next();
+								boolean validateByBookId = validation.idValidation(searchBookId);
+								while (!validateByBookId) {
+									try {
+										throw new LibraryManagementSystemException("Please enter valid data");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please enter proper book id,It should contain exactly 3 digits");
+										searchBookId = scanner.next();
+										if (validation.idValidation(searchBookId)) {
+											break;
+										}
 									}
 								}
-							}
-							try {
-								BookBean bookSearch = service.searchBook(Integer.parseInt(searchBookId));
-								System.out.println("Book found");
-								System.out.println("Book Id---------->" + bookSearch.getBookId());
-								System.out.println("Book Name-------->" + bookSearch.getBookName());
-								System.out.println("Author name--------->" + bookSearch.getAuthorName());
-								System.out.println("Book Availability----->" + bookSearch.isAvaliable());
-
-							} catch (LibraryManagementSystemException e) {
-								System.out.println(e.getMessage());
-
-							}
-							break;
-
-						case 4:
-							System.out.println("Enter book id");
-							String bookId = scanner.next();
-							boolean validateByBookId1 = validation.idValidation(bookId);
-							while (!validateByBookId1) {
 								try {
-									throw new LibraryManagementSystemException("Please enter valid data");
-								} catch (LibraryManagementSystemException lmse) {
-									System.err
-											.println("Please enter proper book id,It should contain exactly 3 digits");
-									bookId = scanner.next();
-									if (validation.idValidation(bookId)) {
-										break;
+									BookBean bookSearch = service.searchBook(Integer.parseInt(searchBookId));
+									System.out.println("Book found");
+									System.out.println("Book Id---------->" + bookSearch.getBookId());
+									System.out.println("Book Name-------->" + bookSearch.getBookName());
+									System.out.println("Author name--------->" + bookSearch.getAuthorName());
+									System.out.println("Book Availability----->" + bookSearch.isAvaliable());
+
+								} catch (LibraryManagementSystemException e) {
+									System.out.println(e.getMessage());
+
+								}
+								break;
+
+							case 4:
+								System.out.println("Enter book id");
+								String bookId = scanner.next();
+								boolean validateByBookId1 = validation.idValidation(bookId);
+								while (!validateByBookId1) {
+									try {
+										throw new LibraryManagementSystemException("Please enter valid data");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please enter proper book id,It should contain exactly 3 digits");
+										bookId = scanner.next();
+										if (validation.idValidation(bookId)) {
+											break;
+										}
 									}
 								}
-							}
-							bookBean.setBookId(Integer.parseInt(bookId));
+								bookBean.setBookId(Integer.parseInt(bookId));
 
-							System.out.println("Enter user id ");
-							String userId = scanner.next();
-							boolean validateByUserId1 = validation.ValidateByUserId(userId);
-							while (!validateByUserId1) {
-								try {
-									throw new LibraryManagementSystemException("pleas enter valid data");
-								} catch (LibraryManagementSystemException lmse) {
-									System.err
-											.println("Please enter valid id number,It should contain exactly 3 digits");
-									userId = scanner.next();
-									if (validation.ValidateByUserId(userId)) {
-										break;
+								System.out.println("Enter user id ");
+								String userId = scanner.next();
+								boolean validateByUserId1 = validation.ValidateByUserId(userId);
+								while (!validateByUserId1) {
+									try {
+										throw new LibraryManagementSystemException("pleas enter valid data");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please enter valid id number,It should contain exactly 3 digits");
+										userId = scanner.next();
+										if (validation.ValidateByUserId(userId)) {
+											break;
+										}
 									}
 								}
-							}
-							userBean.setUserid(Integer.parseInt(userId));
-							RequestBean request = new RequestBean();
-							try {
-								boolean request1 = userService.bookRequest(Integer.parseInt(userId),
-										Integer.parseInt(bookId));
-								if (request1) {
-									System.out.println("Request placed to admin");
-								}
-							} catch (LibraryManagementSystemException lmse) {
-								lmse.printStackTrace();
-								System.out.println(lmse.getMessage());
-							}
-							break;
-						case 5:
-							System.out.println("Returning a book:");
-							System.out.println("------------------");
-							System.out.println("Enter User Id");
-							String user = scanner.next();
-							boolean validateByUser = validation.ValidateByUserId(user);
-							while (!validateByUser) {
+								userBean.setUserid(Integer.parseInt(userId));
+								RequestBean request = new RequestBean();
 								try {
-									throw new LibraryManagementSystemException("pleas enter valid data");
+									boolean request1 = userService.bookRequest(Integer.parseInt(userId),
+											Integer.parseInt(bookId));
+									if (request1) {
+										System.out.println("Request placed to admin");
+									}
 								} catch (LibraryManagementSystemException lmse) {
-									System.err
-											.println("Please enter valid id number,It should contain exactly 3 digits");
-									user = scanner.next();
-									if (validation.ValidateByUserId(user)) {
-										break;
+									lmse.printStackTrace();
+									System.out.println(lmse.getMessage());
+								}
+								break;
+							case 5:
+								System.out.println("Returning a book:");
+								System.out.println("------------------");
+								System.out.println("Enter User Id");
+								String user = scanner.next();
+								boolean validateByUser = validation.ValidateByUserId(user);
+								while (!validateByUser) {
+									try {
+										throw new LibraryManagementSystemException("pleas enter valid data");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please enter valid id number,It should contain exactly 3 digits");
+										user = scanner.next();
+										if (validation.ValidateByUserId(user)) {
+											break;
+										}
 									}
 								}
-							}
-							System.out.println("Enter Book Id");
-							String book = scanner.next();
-							boolean validatedByBookId = validation.idValidation(book);
-							while (!validatedByBookId) {
-								try {
-									throw new LibraryManagementSystemException("Please enter valid data");
-								} catch (LibraryManagementSystemException lmse) {
-									System.err
-											.println("Please enter proper book id,It should contain exactly 3 digits");
-									book = scanner.next();
-									if (validation.idValidation(book)) {
-										break;
+								System.out.println("Enter Book Id");
+								String book = scanner.next();
+								boolean validatedByBookId = validation.idValidation(book);
+								while (!validatedByBookId) {
+									try {
+										throw new LibraryManagementSystemException("Please enter valid data");
+									} catch (LibraryManagementSystemException lmse) {
+										System.err.println(
+												"Please enter proper book id,It should contain exactly 3 digits");
+										book = scanner.next();
+										if (validation.idValidation(book)) {
+											break;
+										}
 									}
 								}
-							}
-							userBean.setUserid(Integer.parseInt(user));
-							bookBean.setBookId(Integer.parseInt(book));
-							
-							try {
-								boolean requestInfo1 = userService.bookReturn(Integer.parseInt(user),
-										Integer.parseInt(book));
-								if (requestInfo1) {
-									System.out.println("Book is Returning to Admin");
+								userBean.setUserid(Integer.parseInt(user));
+								bookBean.setBookId(Integer.parseInt(book));
+
+								try {
+									boolean requestInfo1 = userService.bookReturn(Integer.parseInt(user),
+											Integer.parseInt(book));
+									if (requestInfo1) {
+										System.out.println("Book is Returning to Admin");
+									}
+
+								} catch (LibraryManagementSystemException e) {
+									System.out.println(e.getMessage());
 								}
+								break;
+							case 0:
+								break;
 
-							} catch (LibraryManagementSystemException e) {
-								System.out.println(e.getMessage());
-							}
-							break;
-						case 0:
-							break;
+							default:
+								System.err.println("Invalid option,Please enter from above options only(0-5)");
 
-						default:
-							System.err.println("Invalid option,Please enter from above options only(0-5)");
-
-							break;
-						}// userchoice
-					} while (userChoice != 0);
+								break;
+							}// userchoice
+						} while (userChoice != 0);
 					}
 
 				} catch (LibraryManagementSystemException lmse) {

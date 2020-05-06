@@ -2,7 +2,6 @@ package com.capgemini.librarymanagementsystem.dto;
 
 import java.io.Serializable;
 
-
 @SuppressWarnings("serial")
 public class BookBean implements Serializable {
 

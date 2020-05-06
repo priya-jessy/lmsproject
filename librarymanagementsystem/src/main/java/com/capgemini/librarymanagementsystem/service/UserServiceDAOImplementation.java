@@ -35,7 +35,7 @@ public class UserServiceDAOImplementation implements UserServiceDAO {
 
 	@Override
 	public boolean changePassword(String emailId, String oldPassword, String newPassword) {
-		
+
 		return dao.changePassword(emailId, oldPassword, newPassword);
 	}
 }

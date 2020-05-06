@@ -472,7 +472,7 @@ public class LibraryManagementSystem {
 								}
 
 							} while (check != 0);
-						}else {
+						} else {
 							System.err.println("Invalid login Credentails");
 						}
 
@@ -754,7 +754,7 @@ public class LibraryManagementSystem {
 									break;
 								}// userchoice
 							} while (userChoice != 0);
-						}else {
+						} else {
 							System.err.println("Invalid Login Credentails");
 						}
 					} catch (LibraryManagementSystemException e) {

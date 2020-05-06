@@ -6,7 +6,6 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class RequestBean implements Serializable {
 
-	
 	private int userId;
 	private int bookId;
 	private boolean isIssued;
@@ -54,8 +53,6 @@ public class RequestBean implements Serializable {
 	public void setBookId(int bookId) {
 		this.bookId = bookId;
 	}
-
-	
 
 	public boolean isIssued() {
 		return isIssued;

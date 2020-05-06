@@ -13,7 +13,7 @@ public class UserBean implements Serializable {
 	private double fine;
 
 	public UserBean() {
-		
+
 	}
 
 	public UserBean(int userId, String userName, String password, String email, int numberOfBooks, double fine) {

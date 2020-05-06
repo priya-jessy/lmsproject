@@ -43,8 +43,8 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 	public boolean addUser(LibraryUserBean info) {
 		EntityManager manager = null;
 		EntityTransaction transaction = null;
-		String jpql=null;
-		boolean flag=false;
+		String jpql = null;
+		boolean flag = false;
 		try {
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
 			manager = factory.createEntityManager();
@@ -53,21 +53,20 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			List<LibraryUserBean> users = query.getResultList();
 
 			for (LibraryUserBean libraryUserBean : users) {
-				if (libraryUserBean.getEmailId().equalsIgnoreCase(info.getEmailId()) ){
-					throw new LibraryManagementSystemException(
-							"This EmailId is already existing ");
+				if (libraryUserBean.getEmailId().equalsIgnoreCase(info.getEmailId())) {
+					throw new LibraryManagementSystemException("This EmailId is already existing ");
 				}
-			
+
 			}
 			transaction = manager.getTransaction();
 			transaction.begin();
 			manager.persist(info);
-			flag=true;
+			flag = true;
 			transaction.commit();
 			return true;
 		} catch (Exception e) {
-			if(flag) {
-			transaction.rollback();
+			if (flag) {
+				transaction.rollback();
 			}
 			throw new LibraryManagementSystemException(e.getMessage());
 
@@ -87,14 +86,14 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			String jpql = "select m from LibraryUserBean m";
 			TypedQuery<LibraryUserBean> query = manager.createQuery(jpql, LibraryUserBean.class);
 			List<LibraryUserBean> recordlist = query.getResultList();
-			if(recordlist.isEmpty()) {
+			if (recordlist.isEmpty()) {
 				throw new LibraryManagementSystemException("No users present in Library");
-			}else {
-			return recordlist;
+			} else {
+				return recordlist;
 			}
 		} catch (Exception e) {
 			throw new LibraryManagementSystemException(e.getMessage());
-		}finally {
+		} finally {
 			manager.close();
 			factory.close();
 		}
@@ -129,10 +128,10 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
 			manager = factory.createEntityManager();
 			BookBean search = manager.find(BookBean.class, bookId);
-			if(search==null) {
+			if (search == null) {
 				throw new LibraryManagementSystemException("No book Found");
-			}else {
-			return search;
+			} else {
+				return search;
 			}
 		} catch (Exception e) {
 			throw new LibraryManagementSystemException(e.getMessage());
@@ -151,10 +150,10 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			String jpql = "select b from BookBean b";
 			TypedQuery<BookBean> query = manager.createQuery(jpql, BookBean.class);
 			List<BookBean> bookList = query.getResultList();
-			if(bookList.isEmpty()) {
+			if (bookList.isEmpty()) {
 				throw new LibraryManagementSystemException("No books present in libaray");
-			}else {
-			return bookList;
+			} else {
+				return bookList;
 			}
 		} catch (Exception e) {
 			throw new LibraryManagementSystemException(e.getMessage());
@@ -173,10 +172,10 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			String jpql = "select m from RequestBean m";
 			TypedQuery<RequestBean> query = manager.createQuery(jpql, RequestBean.class);
 			List<RequestBean> recordlist = query.getResultList();
-			if(recordlist.isEmpty()) {
+			if (recordlist.isEmpty()) {
 				throw new LibraryManagementSystemException("No Requests found");
-			}else {
-			return recordlist;
+			} else {
+				return recordlist;
 			}
 		} catch (Exception e) {
 			throw new LibraryManagementSystemException(e.getMessage());
@@ -313,7 +312,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 				expectedReturnDate = info.getExpectedReturnDate();
 				transaction.commit();
 
-				if ((returnedDate != null) && (expectedReturnDate!=null)){
+				if ((returnedDate != null) && (expectedReturnDate != null)) {
 					long expReturnDateInMilliSecs = expectedReturnDate.getTime();
 					long returnedDateInMilliSecs = returnedDate.getTime();
 					long diffInMilliSecs = returnedDateInMilliSecs - expReturnDateInMilliSecs;
@@ -335,10 +334,9 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 					bookInfo = manager.find(BookBean.class, reqBookId);
 					bookInfo.setAvaliable(true);
 					transaction.commit();
-					
-					
+
 					transaction.begin();
-					info=manager.find(RequestBean.class,requestId);
+					info = manager.find(RequestBean.class, requestId);
 					manager.remove(info);
 					transaction.commit();
 
@@ -368,7 +366,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		String jpql = null;
 		int noOfReq = 0;
-		boolean flag=false;
+		boolean flag = false;
 
 		try {
 			factory = Persistence.createEntityManagerFactory("TestPersistence");
@@ -402,9 +400,9 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 						info.setId(id);
 						info.setBookId(bookId);
 						manager.persist(info);
-//						flag=true;
+						// flag=true;
 						transaction.commit();
-						
+
 					} else {
 						throw new LibraryManagementSystemException("This Book Is Not Available For Borrowing");
 					}
@@ -421,10 +419,10 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		LibraryManagementSystemException e) {
 			transaction.rollback();
-			
-//			if(flag) {
-//			transaction.rollback();
-//			}
+
+			// if(flag) {
+			// transaction.rollback();
+			// }
 			throw new LibraryManagementSystemException(e.getMessage());
 		}
 		return true;
@@ -455,12 +453,12 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			List<RequestBean> list = query2.getResultList();
 
 			for (RequestBean requestInfo : list) {
-				if ((requestInfo.getBookId() == bookId) && (requestInfo.getId() == userId)){
-						if(requestInfo.getReturnedDate()!= null) {
-					throw new LibraryManagementSystemException("Already returned this book");
-				}else {
-					reqId = requestInfo.getrId();
-				}
+				if ((requestInfo.getBookId() == bookId) && (requestInfo.getId() == userId)) {
+					if (requestInfo.getReturnedDate() != null) {
+						throw new LibraryManagementSystemException("Already returned this book");
+					} else {
+						reqId = requestInfo.getrId();
+					}
 				}
 			}
 

@@ -3,7 +3,7 @@ package com.capgemini.librarymanagementsystemwithjdbc.dto;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class RequestBean implements Serializable  {
+public class RequestBean implements Serializable {
 	private int requestId;
 	private int bookId;
 	private int userId;

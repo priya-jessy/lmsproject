@@ -12,7 +12,6 @@ public class AdminBean implements Serializable {
 	public AdminBean() {
 	}
 
-
 	public AdminBean(int adminId, String adminName, String adminEmail, String adminPassword) {
 		super();
 		this.adminId = adminId;
@@ -52,7 +51,7 @@ public class AdminBean implements Serializable {
 	public void setAdminPassword(String adminPassword) {
 		this.adminPassword = adminPassword;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "AdminBean [adminId=" + adminId + ", adminName=" + adminName + ", adminEmail=" + adminEmail

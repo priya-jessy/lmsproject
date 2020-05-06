@@ -3,17 +3,13 @@ package com.capgemini.librarymanagementsystem.dao;
 import java.util.Calendar;
 import java.util.Date;
 
-
 import com.capgemini.librarymanagementsystem.database.LibraryManagementSystemDataBase;
 import com.capgemini.librarymanagementsystem.dto.BookBean;
 import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
 import com.capgemini.librarymanagementsystem.exception.LibraryManagementSystemException;
 
-
 public class UserDAOImplementation implements UserDAO {
-
-
 
 	Date returnedDate;
 
@@ -70,9 +66,9 @@ public class UserDAOImplementation implements UserDAO {
 
 	@Override
 	public boolean bookReturn(int userId, int bookId) {
-		Calendar calendar2=Calendar.getInstance();
-		calendar2.add(Calendar.DATE,20);
-		returnedDate=calendar2.getTime();
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.add(Calendar.DATE, 20);
+		returnedDate = calendar2.getTime();
 		for (RequestBean requestInfo : LibraryManagementSystemDataBase.request) {
 
 			if (requestInfo.getBookId() == bookId && requestInfo.getUserId() == userId
@@ -97,7 +93,6 @@ public class UserDAOImplementation implements UserDAO {
 				return true;
 			}
 		}
-
 
 		throw new LibraryManagementSystemException("Password Can't be Changed Due To Invalid Credentials");
 	}

@@ -12,7 +12,7 @@ public interface UserDAO {
 	boolean bookRequest(int userId, int bookId);
 
 	boolean bookReturn(int userId, int bookId);
-	
-	boolean changePassword(String emailId,String oldPassword,String newPassword);
+
+	boolean changePassword(String emailId, String oldPassword, String newPassword);
 
 }

@@ -1,6 +1,5 @@
 package com.capgemini.librarymanagementsystem.dao;
 
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -15,16 +14,17 @@ import com.capgemini.librarymanagementsystem.exception.LibraryManagementSystemEx
 
 public class AdminDAOImplementation implements AdminDAO {
 	Date date = new Date();
-	Date expectedReturnedDate ;
+	Date expectedReturnedDate;
 	Date returnedDate;
 
 	@Override
-	public boolean adminLogin(String adminEmail, String adminPassword)  {
-		//AdminBean adminBean = new AdminBean();
-		for(AdminBean adminBean:LibraryManagementSystemDataBase.admin) {
-		if (adminBean.getAdminEmail().equalsIgnoreCase(adminEmail) && adminBean.getAdminPassword().equals(adminPassword)) {
-			return true;
-		}
+	public boolean adminLogin(String adminEmail, String adminPassword) {
+		// AdminBean adminBean = new AdminBean();
+		for (AdminBean adminBean : LibraryManagementSystemDataBase.admin) {
+			if (adminBean.getAdminEmail().equalsIgnoreCase(adminEmail)
+					&& adminBean.getAdminPassword().equals(adminPassword)) {
+				return true;
+			}
 		}
 
 		throw new LibraryManagementSystemException("Invalid admin credentials");
@@ -34,7 +34,8 @@ public class AdminDAOImplementation implements AdminDAO {
 	public boolean addBook(BookBean info) {
 		for (BookBean bookBean : LibraryManagementSystemDataBase.book) {
 			if (bookBean.getBookId() == info.getBookId()) {
-				throw new LibraryManagementSystemException("Cannot add Book beacause Book with same id is already existing in library");
+				throw new LibraryManagementSystemException(
+						"Cannot add Book beacause Book with same id is already existing in library");
 			}
 		}
 		LibraryManagementSystemDataBase.book.add(info);
@@ -101,7 +102,7 @@ public class AdminDAOImplementation implements AdminDAO {
 			infos.add(userInfo);
 
 		}
-		if(infos.isEmpty()) {
+		if (infos.isEmpty()) {
 			throw new LibraryManagementSystemException("No users present in library");
 		}
 		return infos;
@@ -119,7 +120,7 @@ public class AdminDAOImplementation implements AdminDAO {
 			booksList.add(book);
 
 		}
-		if(booksList.isEmpty()) {
+		if (booksList.isEmpty()) {
 			throw new LibraryManagementSystemException("No books found in library");
 		}
 		return booksList;
@@ -137,7 +138,7 @@ public class AdminDAOImplementation implements AdminDAO {
 			reqInfo.add(requestInfo);
 
 		}
-		if(reqInfo.isEmpty()) {
+		if (reqInfo.isEmpty()) {
 			throw new LibraryManagementSystemException("No Requests are found");
 		}
 
@@ -209,17 +210,17 @@ public class AdminDAOImplementation implements AdminDAO {
 			if (requestInfo1.getBookId() == bookId && requestInfo1.getUserId() == userId
 					&& requestInfo1.isReturned() == true) {
 				isReceived = true;
-				expectedReturnedDate=requestInfo1.getExpectedReturnedDate();
-				returnedDate=requestInfo1.getReturnedDate();
+				expectedReturnedDate = requestInfo1.getExpectedReturnedDate();
+				returnedDate = requestInfo1.getReturnedDate();
 				requestInfo = requestInfo1;
 			}
 		}
 
 		if (isReceived) {
-			long expReturnDate=expectedReturnedDate.getTime();
-			long returnDate=returnedDate.getTime();
-			long diffIndays=returnDate-expReturnDate;
-			int NoOfDaysDelayed=(int)(diffIndays/(24*60*60*1000));
+			long expReturnDate = expectedReturnedDate.getTime();
+			long returnDate = returnedDate.getTime();
+			long diffIndays = returnDate - expReturnDate;
+			int NoOfDaysDelayed = (int) (diffIndays / (24 * 60 * 60 * 1000));
 			for (BookBean bookBean : LibraryManagementSystemDataBase.book) {
 				if (bookBean.getBookId() == bookId) {
 					bookBean.setAvaliable(true);
@@ -232,9 +233,9 @@ public class AdminDAOImplementation implements AdminDAO {
 					noOfBooksBorrowed = userBean.getNumberOfBooks();
 					noOfBooksBorrowed--;
 					userBean.setNumberOfBooks(noOfBooksBorrowed);
-					fine=userBean.getFine();
-					if(NoOfDaysDelayed>0) {
-						fine=fine+(NoOfDaysDelayed*5);
+					fine = userBean.getFine();
+					if (NoOfDaysDelayed > 0) {
+						fine = fine + (NoOfDaysDelayed * 5);
 					}
 					userBean.setFine(fine);
 					break;
