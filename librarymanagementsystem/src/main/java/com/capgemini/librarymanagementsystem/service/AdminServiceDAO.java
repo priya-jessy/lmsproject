@@ -2,9 +2,9 @@ package com.capgemini.librarymanagementsystem.service;
 
 import java.util.List;
 
-import com.capgemini.librarymanagementsystem.dto.AdminBean;
+
 import com.capgemini.librarymanagementsystem.dto.BookBean;
-import com.capgemini.librarymanagementsystem.dto.RequestInfo;
+import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
 
 public interface AdminServiceDAO {
@@ -21,11 +21,11 @@ public interface AdminServiceDAO {
 
 	BookBean searchBook(int bookId);
 
-	List<UserBean> showUsers();
+	List<UserBean> getAllUsers();
 
-	List<BookBean> showBooks();
+	List<BookBean> getAllBooks();
 
-	List<RequestInfo> showRequests();
+	List<RequestBean> getAllRequests();
 
 	boolean bookIssue(int userId, int bookId);
 

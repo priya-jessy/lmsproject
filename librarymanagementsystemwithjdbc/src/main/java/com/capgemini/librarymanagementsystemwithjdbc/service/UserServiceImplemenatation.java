@@ -3,7 +3,6 @@ package com.capgemini.librarymanagementsystemwithjdbc.service;
 import com.capgemini.librarymanagementsystemwithjdbc.dao.UserDAO;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.BookBean;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.LibraryUserBean;
-import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestInfo;
 import com.capgemini.librarymanagementsystemwithjdbc.factory.LibraryManagementSystemFactory;
 
 public class UserServiceImplemenatation implements UserService {

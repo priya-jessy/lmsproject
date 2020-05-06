@@ -1,8 +1,8 @@
 package com.capgemini.librarymanagementsystemwithjdbc.dto;
 
-import java.sql.Date;
+import java.io.Serializable;
 
-public class BookBean {
+public class BookBean implements Serializable {
 
 	private int slno;
 	private int bookId;

@@ -2,22 +2,25 @@ package com.capgemini.librarymanagementsystem.dao;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+
 
 import com.capgemini.librarymanagementsystem.database.LibraryManagementSystemDataBase;
 import com.capgemini.librarymanagementsystem.dto.BookBean;
-import com.capgemini.librarymanagementsystem.dto.RequestInfo;
+import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
 import com.capgemini.librarymanagementsystem.exception.LibraryManagementSystemException;
 
+
 public class UserDAOImplementation implements UserDAO {
+
+
 
 	Date returnedDate;
 
 	@Override
 	public UserBean login(String email, String password) {
 		for (UserBean userBean : LibraryManagementSystemDataBase.users)
-			if (userBean.getEmail().equals(email) && userBean.getPassword().equals(password)) {
+			if (userBean.getEmail().equalsIgnoreCase(email) && userBean.getPassword().equals(password)) {
 				return userBean;
 
 			}
@@ -36,10 +39,10 @@ public class UserDAOImplementation implements UserDAO {
 
 	@Override
 	public boolean bookRequest(int userId, int bookId) {
-		RequestInfo requestInfo = new RequestInfo();
+		RequestBean requestInfo = new RequestBean();
 		boolean isRequestExists = false;
 
-		for (RequestInfo info : LibraryManagementSystemDataBase.request) {
+		for (RequestBean info : LibraryManagementSystemDataBase.request) {
 			if (bookId == info.getBookId()) {
 				isRequestExists = true;
 			}
@@ -70,7 +73,7 @@ public class UserDAOImplementation implements UserDAO {
 		Calendar calendar2=Calendar.getInstance();
 		calendar2.add(Calendar.DATE,20);
 		returnedDate=calendar2.getTime();
-		for (RequestInfo requestInfo : LibraryManagementSystemDataBase.request) {
+		for (RequestBean requestInfo : LibraryManagementSystemDataBase.request) {
 
 			if (requestInfo.getBookId() == bookId && requestInfo.getUserId() == userId
 					&& requestInfo.isIssued() == true) {
@@ -87,7 +90,7 @@ public class UserDAOImplementation implements UserDAO {
 
 	@Override
 	public boolean changePassword(String emailId, String oldPassword, String newPassword) {
-		
+
 		for (UserBean userInfo : LibraryManagementSystemDataBase.users) {
 			if ((userInfo.getEmail().equals(emailId)) && (userInfo.getPassword().equals(oldPassword))) {
 				userInfo.setPassword(newPassword);
@@ -95,7 +98,7 @@ public class UserDAOImplementation implements UserDAO {
 			}
 		}
 
-		
+
 		throw new LibraryManagementSystemException("Password Can't be Changed Due To Invalid Credentials");
 	}
 

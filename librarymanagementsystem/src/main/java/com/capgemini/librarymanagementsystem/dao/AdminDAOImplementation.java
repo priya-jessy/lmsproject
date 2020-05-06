@@ -9,7 +9,7 @@ import java.util.List;
 import com.capgemini.librarymanagementsystem.database.LibraryManagementSystemDataBase;
 import com.capgemini.librarymanagementsystem.dto.AdminBean;
 import com.capgemini.librarymanagementsystem.dto.BookBean;
-import com.capgemini.librarymanagementsystem.dto.RequestInfo;
+import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
 import com.capgemini.librarymanagementsystem.exception.LibraryManagementSystemException;
 
@@ -19,10 +19,12 @@ public class AdminDAOImplementation implements AdminDAO {
 	Date returnedDate;
 
 	@Override
-	public boolean adminLogin(String adminEmail, String adminPassword) {
-		AdminBean adminBean = new AdminBean();
-		if (adminBean.getAdminEmail().equals(adminEmail) && adminBean.getAdminPassword().equals(adminPassword)) {
+	public boolean adminLogin(String adminEmail, String adminPassword)  {
+		//AdminBean adminBean = new AdminBean();
+		for(AdminBean adminBean:LibraryManagementSystemDataBase.admin) {
+		if (adminBean.getAdminEmail().equalsIgnoreCase(adminEmail) && adminBean.getAdminPassword().equals(adminPassword)) {
 			return true;
+		}
 		}
 
 		throw new LibraryManagementSystemException("Invalid admin credentials");
@@ -87,7 +89,7 @@ public class AdminDAOImplementation implements AdminDAO {
 	}
 
 	@Override
-	public List<UserBean> showUsers() {
+	public List<UserBean> getAllUsers() {
 
 		List<UserBean> infos = new LinkedList<UserBean>();
 
@@ -107,7 +109,7 @@ public class AdminDAOImplementation implements AdminDAO {
 	}
 
 	@Override
-	public List<BookBean> showBooks() {
+	public List<BookBean> getAllBooks() {
 		List<BookBean> booksList = new LinkedList<BookBean>();
 		for (BookBean book : LibraryManagementSystemDataBase.book) {
 
@@ -124,11 +126,9 @@ public class AdminDAOImplementation implements AdminDAO {
 	}
 
 	@Override
-	public List<RequestInfo> showRequests() {
-		List<RequestInfo> reqInfo = new LinkedList<RequestInfo>();
-		for (RequestInfo requestInfo : LibraryManagementSystemDataBase.request) {
-			requestInfo.getBookBean();
-			requestInfo.getUserBean();
+	public List<RequestBean> getAllRequests() {
+		List<RequestBean> reqInfo = new LinkedList<RequestBean>();
+		for (RequestBean requestInfo : LibraryManagementSystemDataBase.request) {
 			requestInfo.isIssued();
 			requestInfo.isReturned();
 			requestInfo.getIssuedDate();
@@ -148,14 +148,14 @@ public class AdminDAOImplementation implements AdminDAO {
 	public boolean bookIssue(int userId, int bookId) {
 		UserBean user = new UserBean();
 		BookBean book = new BookBean();
-		RequestInfo requestInfo = new RequestInfo();
+		RequestBean requestInfo = new RequestBean();
 		int noOfBooksBorrowed = 0;
 		boolean isValidRequest = false;
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, 15);
 		expectedReturnedDate = calendar.getTime();
 
-		for (RequestInfo info : LibraryManagementSystemDataBase.request) {
+		for (RequestBean info : LibraryManagementSystemDataBase.request) {
 			if (info.getUserId() == userId) {
 				if (info.getBookId() == bookId) {
 					isValidRequest = true;
@@ -200,22 +200,22 @@ public class AdminDAOImplementation implements AdminDAO {
 
 	@Override
 	public boolean isBookReceived(int userId, int bookId) {
-		boolean isBookReceived = false;
-		RequestInfo requestInfo = new RequestInfo();
+		boolean isReceived = false;
+		RequestBean requestInfo = new RequestBean();
 		int noOfBooksBorrowed;
 		double fine;
 
-		for (RequestInfo requestInfo1 : LibraryManagementSystemDataBase.request) {
+		for (RequestBean requestInfo1 : LibraryManagementSystemDataBase.request) {
 			if (requestInfo1.getBookId() == bookId && requestInfo1.getUserId() == userId
 					&& requestInfo1.isReturned() == true) {
-				isBookReceived = true;
+				isReceived = true;
 				expectedReturnedDate=requestInfo1.getExpectedReturnedDate();
 				returnedDate=requestInfo1.getReturnedDate();
 				requestInfo = requestInfo1;
 			}
 		}
 
-		if (isBookReceived) {
+		if (isReceived) {
 			long expReturnDate=expectedReturnedDate.getTime();
 			long returnDate=returnedDate.getTime();
 			long diffIndays=returnDate-expReturnDate;

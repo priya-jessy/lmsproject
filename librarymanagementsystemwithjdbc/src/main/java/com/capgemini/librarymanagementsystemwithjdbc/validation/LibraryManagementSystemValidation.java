@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class LibraryManagementSystemValidation {
 	
 	public boolean validateByBookId(String id) {
-		Pattern pattern = Pattern.compile("^[0-9]{6}$");
+		Pattern pattern = Pattern.compile("^[0-9]{3}$");
 		Matcher matcher = pattern.matcher(id);
 		if (matcher.matches()) {
 			return true;
@@ -31,7 +31,7 @@ public class LibraryManagementSystemValidation {
 		return false;
 	}
 	public boolean ValidateByUserId(String userId) {
-		Pattern pattern = Pattern.compile("[0-9]{3}");
+		Pattern pattern = Pattern.compile("^[0-9]{3}$");
 		Matcher matcher = pattern.matcher(userId);
 		if (matcher.matches()) {
 			return true;

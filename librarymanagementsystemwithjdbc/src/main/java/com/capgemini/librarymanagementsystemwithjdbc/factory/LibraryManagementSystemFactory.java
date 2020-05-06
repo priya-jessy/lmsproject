@@ -6,7 +6,7 @@ import com.capgemini.librarymanagementsystemwithjdbc.dao.UserDAO;
 import com.capgemini.librarymanagementsystemwithjdbc.dao.UserDAOImplementation;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.BookBean;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.LibraryUserBean;
-import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestInfo;
+import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestBean;
 import com.capgemini.librarymanagementsystemwithjdbc.service.AdminService;
 import com.capgemini.librarymanagementsystemwithjdbc.service.AdminServiceImplementation;
 import com.capgemini.librarymanagementsystemwithjdbc.service.UserService;
@@ -24,9 +24,9 @@ public class LibraryManagementSystemFactory {
 		return new BookBean();
 	}
 
-	public static RequestInfo getRequestInfo() {
+	public static RequestBean getRequestInfo() {
 
-		return new RequestInfo();
+		return new RequestBean();
 	}
 
 	public static UserDAO getUserDAO() {

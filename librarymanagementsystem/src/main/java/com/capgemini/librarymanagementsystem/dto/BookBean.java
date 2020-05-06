@@ -1,8 +1,9 @@
 package com.capgemini.librarymanagementsystem.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
+
+@SuppressWarnings("serial")
 public class BookBean implements Serializable {
 
 	private int bookId;
@@ -10,9 +11,22 @@ public class BookBean implements Serializable {
 	private String authorName;
 	private String publisher;
 	private String category;
-	private Date issueDate;
-	private Date returnDate;
 	private boolean isAvaliable;
+
+	public BookBean() {
+
+	}
+
+	public BookBean(int bookId, String bookName, String authorName, String publisher, String category,
+			boolean isAvaliable) {
+		super();
+		this.bookId = bookId;
+		this.bookName = bookName;
+		this.authorName = authorName;
+		this.publisher = publisher;
+		this.category = category;
+		this.isAvaliable = isAvaliable;
+	}
 
 	public boolean isAvaliable() {
 		return isAvaliable;
@@ -62,20 +76,10 @@ public class BookBean implements Serializable {
 		this.category = category;
 	}
 
-	public Date getIssueDate() {
-		return issueDate;
-	}
-
-	public void setIssueDate(Date issueDate) {
-		this.issueDate = issueDate;
-	}
-
-	public Date getReturnDate() {
-		return returnDate;
-	}
-
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
+	@Override
+	public String toString() {
+		return "BookBean [bookId=" + bookId + ", bookName=" + bookName + ", authorName=" + authorName + ", publisher="
+				+ publisher + ", category=" + category + ", isAvaliable=" + isAvaliable + "]";
 	}
 
 }

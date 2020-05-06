@@ -2,7 +2,7 @@ package com.capgemini.librarymanagementsystemwithjdbc.service;
 
 import com.capgemini.librarymanagementsystemwithjdbc.dto.BookBean;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.LibraryUserBean;
-import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestInfo;
+
 
 
 public interface UserService {

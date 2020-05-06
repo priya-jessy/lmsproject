@@ -1,7 +1,6 @@
 package com.capgemini.librarymanagementsystem.dao;
 
 import com.capgemini.librarymanagementsystem.dto.BookBean;
-import com.capgemini.librarymanagementsystem.dto.RequestInfo;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
 
 public interface UserDAO {

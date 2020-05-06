@@ -2,17 +2,29 @@ package com.capgemini.librarymanagementsystem.dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class UserBean implements Serializable {
 
 	private int userId;
 	private String userName;
 	private String password;
-	private String firstName;
-	private String lastName;
-	private String department;
 	private String email;
-	private int numberOfBooks=0;
+	private int numberOfBooks;
 	private double fine;
+
+	public UserBean() {
+		
+	}
+
+	public UserBean(int userId, String userName, String password, String email, int numberOfBooks, double fine) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+		this.numberOfBooks = numberOfBooks;
+		this.fine = fine;
+	}
 
 	public double getFine() {
 		return fine;
@@ -54,36 +66,18 @@ public class UserBean implements Serializable {
 		this.password = password;
 	}
 
-	public String getFirstname() {
-		return firstName;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstName = firstname;
-	}
-
-	public String getLastname() {
-		return lastName;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastName = lastname;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
 	public int getNumberOfBooks() {
 		return numberOfBooks;
 	}
 
 	public void setNumberOfBooks(int numberOfBooks) {
 		this.numberOfBooks = numberOfBooks;
+	}
+
+	@Override
+	public String toString() {
+		return "UserBean [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
+				+ ", numberOfBooks=" + numberOfBooks + ", fine=" + fine + "]";
 	}
 
 }

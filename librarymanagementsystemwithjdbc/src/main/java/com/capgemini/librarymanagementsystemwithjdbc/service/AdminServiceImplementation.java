@@ -6,7 +6,7 @@ import com.capgemini.librarymanagementsystemwithjdbc.dao.AdminDAO;
 
 import com.capgemini.librarymanagementsystemwithjdbc.dto.BookBean;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.LibraryUserBean;
-import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestInfo;
+import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestBean;
 
 import com.capgemini.librarymanagementsystemwithjdbc.factory.LibraryManagementSystemFactory;
 
@@ -46,25 +46,25 @@ public class AdminServiceImplementation implements AdminService {
 	@Override
 	public List<LibraryUserBean> showUsers() {
 
-		return dao.showUsers();
+		return dao.getAllUsers();
 	}
 
 	@Override
 	public List<BookBean> showBooks() {
 
-		return dao.showBooks();
+		return dao.getAllBooks();
 	}
 
 	@Override
-	public List<RequestInfo> showRequests() {
+	public List<RequestBean> showRequests() {
 
-		return dao.showRequests();
+		return dao.getAllRequests();
 	}
 
 	@Override
-	public boolean bookIssue(int requestId) {
+	public boolean isBookIssued(int requestId) {
 
-		return dao.bookIssue(requestId);
+		return dao.isBookIssued(requestId);
 	}
 
 	@Override

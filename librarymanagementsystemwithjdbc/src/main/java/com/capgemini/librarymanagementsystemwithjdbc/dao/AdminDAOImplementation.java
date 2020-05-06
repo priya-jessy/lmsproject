@@ -1,53 +1,42 @@
 package com.capgemini.librarymanagementsystemwithjdbc.dao;
 
-import java.io.FileInputStream;
-
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
 
 import com.capgemini.librarymanagementsystemwithjdbc.dto.BookBean;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.LibraryUserBean;
-import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestInfo;
+import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestBean;
 
 import com.capgemini.librarymanagementsystemwithjdbc.exception.LMSException;
+import com.capgemini.librarymanagementsystemwithjdbc.utility.LmsUtility;
 
 public class AdminDAOImplementation implements AdminDAO {
+	LmsUtility lmsUtility = new LmsUtility();
 
 	@Override
 	public boolean addUser(LibraryUserBean userBean) {
 
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
-			String dburl = properties.getProperty("dburl");
-			try (Connection connection = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("addUser");
-				try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-					pstmt.setInt(1, userBean.getId());
-					pstmt.setString(2, userBean.getUserName());
-					pstmt.setString(3, userBean.getFirstName());
-					pstmt.setString(4, userBean.getLastName());
-					pstmt.setString(5, userBean.getEmailId());
-					pstmt.setString(6, userBean.getPassword());
-					pstmt.setString(7, userBean.getRole());
+		try (Connection connection = lmsUtility.getConnection()) {
 
-					int isRegistered = pstmt.executeUpdate();
+			try (PreparedStatement pstmt = connection.prepareStatement(lmsUtility.getQuery("addUser"))) {
+				pstmt.setInt(1, userBean.getId());
+				pstmt.setString(2, userBean.getUserName());
+				pstmt.setString(3, userBean.getFirstName());
+				pstmt.setString(4, userBean.getLastName());
+				pstmt.setString(5, userBean.getEmailId());
+				pstmt.setString(6, userBean.getPassword());
+				pstmt.setString(7, userBean.getRole());
 
-				}
+				pstmt.executeUpdate();
+
 			}
-
 		} catch (Exception e) {
 			throw new LMSException("User already registered");
 		}
@@ -58,58 +47,40 @@ public class AdminDAOImplementation implements AdminDAO {
 	@Override
 	public LibraryUserBean login(String emailId, String password) {
 		LibraryUserBean adminBean = new LibraryUserBean();
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
-
-			String dburl = properties.getProperty("dburl");
-
-			try (Connection conn = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("login");
-				try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-					pstmt.setString(1, emailId);
-					pstmt.setString(2, password);
-					ResultSet rs = pstmt.executeQuery();
-					if (rs.next()) {
-						adminBean.setEmailId(rs.getString("emailid"));
-						adminBean.setPassword(rs.getString("password"));
-						return adminBean;
-					}
+		try (Connection conn = lmsUtility.getConnection()) {
+			try (PreparedStatement pstmt = conn.prepareStatement(lmsUtility.getQuery("login"))) {
+				pstmt.setString(1, emailId);
+				pstmt.setString(2, password);
+				ResultSet rs = pstmt.executeQuery();
+				if (rs.next()) {
+					adminBean.setEmailId(rs.getString("emailid"));
+					adminBean.setPassword(rs.getString("password"));
+					return adminBean;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		throw new LMSException("Invalid Credentials");
+		throw new LMSException("Invalid login Credentials");
 
 	}
 
 	@Override
 	public boolean addBook(BookBean info) {
+		try (Connection connection = lmsUtility.getConnection()) {
+			try (PreparedStatement pstmt = connection.prepareStatement(lmsUtility.getQuery("addBook"))) {
+				pstmt.setInt(1, info.getBookId());
+				pstmt.setString(2, info.getBookName());
+				pstmt.setString(3, info.getAuthorName());
+				pstmt.setString(4, info.getPublisher());
+				pstmt.setString(5, info.getCategory());
+				pstmt.setBoolean(6, info.isAvaliable());
 
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
-			String dburl = properties.getProperty("dburl");
-			try (Connection connection = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("addBook");
-				try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-					pstmt.setInt(1, info.getBookId());
-					pstmt.setString(2, info.getBookName());
-					pstmt.setString(3, info.getAuthorName());
-					pstmt.setString(4, info.getPublisher());
-					pstmt.setString(5, info.getCategory());
-					pstmt.setBoolean(6, info.isAvaliable());
+				pstmt.executeUpdate();
 
-					int isAdded = pstmt.executeUpdate();
-
-				}
 			}
-
 		} catch (Exception e) {
-			throw new LMSException("Book is already existing");
+			throw new LMSException("Book with same is already exists in library");
 
 		}
 
@@ -118,20 +89,12 @@ public class AdminDAOImplementation implements AdminDAO {
 
 	@Override
 	public boolean removeBook(int bookId) {
-
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
-			String dburl = properties.getProperty("dburl");
-			try (Connection connection = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("removeBook");
-				try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-					pstmt.setInt(1, bookId);
-					int res = pstmt.executeUpdate();
-				}
-
+		try (Connection connection = lmsUtility.getConnection()) {
+			try (PreparedStatement pstmt = connection.prepareStatement(lmsUtility.getQuery("removeBook"))) {
+				pstmt.setInt(1, bookId);
+				pstmt.executeUpdate();
 			}
+
 		} catch (Exception e) {
 			throw new LMSException("book is already removed from library");
 		}
@@ -142,22 +105,15 @@ public class AdminDAOImplementation implements AdminDAO {
 	@Override
 	public BookBean searchBook(int bookId) {
 		BookBean bookBean = new BookBean();
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
-			String dburl = properties.getProperty("dburl");
-			try (Connection connection = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("searchBook");
-				try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-					pstmt.setInt(1, bookId);
-					ResultSet rs = pstmt.executeQuery();
-					if (rs.next()) {
-						bookBean.setBookId(rs.getInt("bookid"));
-						bookBean.setBookName(rs.getString("bookName"));
-						bookBean.setAuthorName(rs.getString("authorName"));
-						return bookBean;
-					}
+		try (Connection connection = lmsUtility.getConnection()) {
+			try (PreparedStatement pstmt = connection.prepareStatement(lmsUtility.getQuery("searchBook"))) {
+				pstmt.setInt(1, bookId);
+				ResultSet rs = pstmt.executeQuery();
+				if (rs.next()) {
+					bookBean.setBookId(rs.getInt("bookid"));
+					bookBean.setBookName(rs.getString("bookName"));
+					bookBean.setAuthorName(rs.getString("authorName"));
+					return bookBean;
 				}
 			}
 		} catch (Exception e) {
@@ -168,191 +124,151 @@ public class AdminDAOImplementation implements AdminDAO {
 	}
 
 	@Override
-	public List<LibraryUserBean> showUsers() {
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
+	public List<LibraryUserBean> getAllUsers() {
+		try (Connection conn = lmsUtility.getConnection()) {
+			try (Statement pstmt = conn.createStatement()) {
 
-			String dburl = properties.getProperty("dburl");
+				ResultSet rs = pstmt.executeQuery(lmsUtility.getQuery("getAllUsers"));
+				List<LibraryUserBean> beans = new LinkedList<LibraryUserBean>();
+				while (rs.next()) {
+					LibraryUserBean userBean = new LibraryUserBean();
 
-			try (Connection conn = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("getAllUsers");
-				try (Statement pstmt = conn.createStatement()) {
+					userBean.setId(rs.getInt("id"));
+					userBean.setUserName(rs.getString("username"));
+					userBean.setFirstName(rs.getString("firstname"));
+					userBean.setLastName(rs.getString("lastname"));
+					userBean.setEmailId(rs.getString("emailid"));
+					userBean.setPassword(rs.getString("password"));
+					userBean.setRole(rs.getString("role"));
+					userBean.setNoOfBooksBorrowed(rs.getInt("noOfBooksBorrowed"));
+					userBean.setFine(rs.getInt("fine"));
+					beans.add(userBean);
 
-					ResultSet rs = pstmt.executeQuery(query);
-					List<LibraryUserBean> beans = new LinkedList<LibraryUserBean>();
-					while (rs.next()) {
-						LibraryUserBean userBean = new LibraryUserBean();
-
-						userBean.setId(rs.getInt("id"));
-						userBean.setUserName(rs.getString("username"));
-						userBean.setFirstName(rs.getString("firstname"));
-						userBean.setLastName(rs.getString("lastname"));
-						userBean.setEmailId(rs.getString("emailid"));
-						userBean.setPassword(rs.getString("password"));
-						userBean.setRole(rs.getString("role"));
-						userBean.setNoOfBooksBorrowed(rs.getInt("noOfBooksBorrowed"));
-						userBean.setFine(rs.getInt("fine"));
-						beans.add(userBean);
-
-					}
-					if(beans.isEmpty()) {
-						throw new LMSException("No users present in the database");
-					}
-					return beans;
 				}
+				if (beans.isEmpty()) {
+					throw new LMSException("No users present in the library");
+				}
+				return beans;
 			}
 		} catch (Exception e) {
 			throw new LMSException(e.getMessage());
 		}
-		
 
 	}
 
 	@Override
-	public List<BookBean> showBooks() {
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
+	public List<BookBean> getAllBooks() {
 
-			String dburl = properties.getProperty("dburl");
+		try (Connection conn = lmsUtility.getConnection()) {
+			try (Statement pstmt = conn.createStatement()) {
 
-			try (Connection conn = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("getAllBookInfo");
-				try (Statement pstmt = conn.createStatement()) {
+				ResultSet rs = pstmt.executeQuery(lmsUtility.getQuery("getAllBookInfo"));
+				List<BookBean> beans = new LinkedList<BookBean>();
+				while (rs.next()) {
+					BookBean bookBean = new BookBean();
+					bookBean.setBookId(rs.getInt("bookid"));
+					bookBean.setBookName(rs.getString("bookName"));
+					bookBean.setAuthorName(rs.getString("authorName"));
+					bookBean.setPublisher(rs.getString("publisher"));
+					bookBean.setCategory(rs.getString("category"));
+					bookBean.setAvaliable(rs.getBoolean("isAvailable"));
+					beans.add(bookBean);
 
-					ResultSet rs = pstmt.executeQuery(query);
-					List<BookBean> beans = new LinkedList<BookBean>();
-					while (rs.next()) {
-						BookBean bookBean = new BookBean();
-						bookBean.setBookId(rs.getInt("bookid"));
-						bookBean.setBookName(rs.getString("bookName"));
-						bookBean.setAuthorName(rs.getString("authorName"));
-						bookBean.setPublisher(rs.getString("publisher"));
-						bookBean.setCategory(rs.getString("category"));
-						bookBean.setAvaliable(rs.getBoolean("isAvailable"));
-						beans.add(bookBean);
-
-					}
-					if(beans.isEmpty()) {
-						throw new LMSException("No books found in library");
-					}else {
-					
-					return beans;
-					}
 				}
+				if (beans.isEmpty()) {
+					throw new LMSException("No books found in library");
+				} else {
 
+					return beans;
+				}
 			}
+
 		} catch (Exception e) {
 			throw new LMSException(e.getMessage());
 
 		}
-		
 
 	}
 
 	@Override
-	public List<RequestInfo> showRequests() {
-		try (FileInputStream fis = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(fis);
-			Class.forName(properties.getProperty("path")).newInstance();
+	public List<RequestBean> getAllRequests() {
 
-			String dburl = properties.getProperty("dburl");
+		try (Connection conn = lmsUtility.getConnection()) {
 
-			try (Connection conn = DriverManager.getConnection(dburl)) {
-				String query = properties.getProperty("showRequest");
-				try (Statement pstmt = conn.createStatement()) {
+			try (Statement pstmt = conn.createStatement()) {
 
-					ResultSet rs = pstmt.executeQuery(query);
-					List<RequestInfo> beans = new ArrayList<RequestInfo>();
-					while (rs.next()) {
-						RequestInfo requestInfo = new RequestInfo();
-						requestInfo.setRequestId(rs.getInt("requestid"));
-						requestInfo.setUserId(rs.getInt("id"));
-						requestInfo.setBookId(rs.getInt("bookid"));
-						requestInfo.setIssueDate(rs.getDate("issuedDate"));
-						requestInfo.setReturnDate(rs.getDate("returnedDate"));
-						requestInfo.setExpectedReturnDate(rs.getDate("expectedReturnDate"));
-						beans.add(requestInfo);
+				ResultSet rs = pstmt.executeQuery(lmsUtility.getQuery("showRequest"));
+				List<RequestBean> beans = new ArrayList<RequestBean>();
+				while (rs.next()) {
+					RequestBean requestInfo = new RequestBean();
+					requestInfo.setRequestId(rs.getInt("requestid"));
+					requestInfo.setUserId(rs.getInt("id"));
+					requestInfo.setBookId(rs.getInt("bookid"));
+					requestInfo.setIssueDate(rs.getDate("issuedDate"));
+					requestInfo.setReturnDate(rs.getDate("returnedDate"));
+					requestInfo.setExpectedReturnDate(rs.getDate("expectedReturnDate"));
+					beans.add(requestInfo);
 
-					}
-					if(beans.isEmpty()) {
-						throw new LMSException("No requests Found");
-					}else {
-						return beans;
-					}
-					
+				}
+				if (beans.isEmpty()) {
+					throw new LMSException("No requests Found");
+				} else {
+					return beans;
 				}
 
 			}
-		} catch (Exception e) {
-			throw new LMSException(e.getMessage());	
-		}
 
-		
+		} catch (Exception e) {
+			throw new LMSException(e.getMessage());
+		}
 
 	}
 
 	@Override
-	public boolean bookIssue(int requestId) {
-		try (FileInputStream file = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(file);
-			Class.forName(properties.getProperty("path"));
+	public boolean isBookIssued(int requestId) {
+		try (Connection connection = lmsUtility.getConnection();
+				PreparedStatement requestpstmt = connection.prepareStatement(lmsUtility.getQuery("getRequest"));
+				PreparedStatement userPstmt = connection.prepareStatement(lmsUtility.getQuery("getUsersBooks"));
+				PreparedStatement issuePstmt = connection.prepareStatement(lmsUtility.getQuery("issueBookQuery"));
+				PreparedStatement avaliabilityPstmt = connection
+						.prepareStatement(lmsUtility.getQuery("setBookAvailability"));
+				PreparedStatement setBooksBorrowedStmt = connection
+						.prepareStatement(lmsUtility.getQuery("setNoOfBooksBorrowed"));) {
 
-			try (Connection connection = DriverManager.getConnection(properties.getProperty("dburl"));
-					PreparedStatement getReqStmt = connection.prepareStatement(properties.getProperty("getRequest"));
-					PreparedStatement getUserStmt = connection.prepareStatement(properties.getProperty("getUsersBooks"));
-					PreparedStatement issueStmt = connection.prepareStatement(properties.getProperty("issueBookQuery"));
-					PreparedStatement setBookAvailStmt = connection
-							.prepareStatement(properties.getProperty("setAvailability"));
-					PreparedStatement setBooksBorrowedStmt = connection
-							.prepareStatement(properties.getProperty("setNoOfBooksBorrowed"));) {
+			requestpstmt.setInt(1, requestId);
+			try (ResultSet requestResultSet = requestpstmt.executeQuery();) {
 
-				getReqStmt.setInt(1, requestId);
-				try (ResultSet getReqResSet = getReqStmt.executeQuery();) {
+				if (requestResultSet.next()) {
+					int requestUserId = requestResultSet.getInt("id");
+					int requestBookId = requestResultSet.getInt("bookid");
+					userPstmt.setInt(1, requestUserId);
 
-					if (getReqResSet.next()) {
-						int requestUserId = getReqResSet.getInt("id");
-						int requestBookId = getReqResSet.getInt("bookid");
-						getUserStmt.setInt(1, requestUserId);
-						
-						try (ResultSet getUserResSet = getUserStmt.executeQuery();) {
+					try (ResultSet userResultSet = userPstmt.executeQuery();) {
 
-							if (getUserResSet.next()) {
-								LibraryUserBean users = new LibraryUserBean();
-								users.setNoOfBooksBorrowed(getUserResSet.getInt("noOfBooksBorrowed"));
-								int noOfBooksBorrowed = users.getNoOfBooksBorrowed();
+						if (userResultSet.next()) {
+							LibraryUserBean users = new LibraryUserBean();
+							users.setNoOfBooksBorrowed(userResultSet.getInt("noOfBooksBorrowed"));
+							int noOfBooksBorrowed = users.getNoOfBooksBorrowed();
 
-								issueStmt.setInt(1, requestId);
-								int updateDate = issueStmt.executeUpdate();
-								if (updateDate != 0) {
-									// Update book availability as false as we are issuing
+							issuePstmt.setInt(1, requestId);
+							int updateDate = issuePstmt.executeUpdate();
+							if (updateDate != 0) {
+								avaliabilityPstmt.setInt(1, requestBookId);
+								avaliabilityPstmt.executeUpdate();
+								noOfBooksBorrowed++;
+								setBooksBorrowedStmt.setInt(1, noOfBooksBorrowed);
+								setBooksBorrowedStmt.setInt(2, requestUserId);
+								setBooksBorrowedStmt.executeUpdate();
 
-									setBookAvailStmt.setInt(1, requestBookId);
-									setBookAvailStmt.executeUpdate();
-
-									// Update User no of books borrowed
-									noOfBooksBorrowed++;
-
-									setBooksBorrowedStmt.setInt(1, noOfBooksBorrowed);
-									setBooksBorrowedStmt.setInt(2, requestUserId);
-									setBooksBorrowedStmt.executeUpdate();
-
-								} else {
-									throw new LMSException("This Book is Already Issued");
-								}
+							} else {
+								throw new LMSException("This Book is Already Issued");
 							}
-						} // End Of Gettinge User Result Set
-
-					} else {
-						throw new LMSException("InValid Request Id ");
+						}
 					}
-				} // End Of Connection
 
+				} else {
+					throw new LMSException("Invalid Request Id due to invaild bookid or userid ");
+				}
 			}
 
 		} catch (Exception e) {
@@ -360,7 +276,7 @@ public class AdminDAOImplementation implements AdminDAO {
 
 		}
 		return true;
-			}
+	}
 
 	@Override
 	public boolean isBookReceived(int requestId) {
@@ -369,79 +285,65 @@ public class AdminDAOImplementation implements AdminDAO {
 		int userId = 0;
 		int boodId = 0;
 
-		try (FileInputStream file = new FileInputStream("LibraryManagementSystemDataBase.properties")) {
-			Properties properties = new Properties();
-			properties.load(file);
+		try (Connection connection = lmsUtility.getConnection();
+				PreparedStatement getReqPstmt = connection.prepareStatement(lmsUtility.getQuery("getRequest"));
+				PreparedStatement finePstmt = connection.prepareStatement(lmsUtility.getQuery("getfine"));
+				PreparedStatement setFinePstmt = connection.prepareStatement(lmsUtility.getQuery("userFine"));
+				PreparedStatement bookAvailabilityPstmt = connection
+						.prepareStatement(lmsUtility.getQuery("setAvailabilityOfBook"));
+				PreparedStatement noOfBooksPstmt = connection
+						.prepareStatement(lmsUtility.getQuery("setNoOfBooksBorrowed1"));
+				PreparedStatement removeRequest = connection.prepareStatement(lmsUtility.getQuery("removeRequest"));) {
 
-			Class.forName(properties.getProperty("path"));
-			try (Connection connection = DriverManager.getConnection(properties.getProperty("dburl"));
-					PreparedStatement getReqStmt = connection.prepareStatement(properties.getProperty("getRequest"));
-					PreparedStatement fineStmt = connection.prepareStatement(properties.getProperty("getfine"));
-					PreparedStatement setFineStmt = connection.prepareStatement(properties.getProperty("userFine"));
-					PreparedStatement setBookAvailStmt = connection
-							.prepareStatement(properties.getProperty("setBookAvailability2"));
-					PreparedStatement setNoOfBooksStmt = connection
-							.prepareStatement(properties.getProperty("setNoOfBooksBorrowed2"));
-					PreparedStatement removeReqStmt = connection
-							.prepareStatement(properties.getProperty("removeRequest"));) {
+			getReqPstmt.setInt(1, requestId);
+			try (ResultSet reqResSet = getReqPstmt.executeQuery();) {
+				while (reqResSet.next()) {
+					Date returnedDate = reqResSet.getDate("returnedDate");
+					Date expectedReturnedDate = reqResSet.getDate("expectedReturnDate");
+					userId = reqResSet.getInt("id");
+					boodId = reqResSet.getInt("bookid");
 
-				getReqStmt.setInt(1, requestId);
-				try (ResultSet reqResSet = getReqStmt.executeQuery();) {
-					while (reqResSet.next()) {
-						Date returnedDate = reqResSet.getDate("returnedDate");
-						Date expectedReturnedDate = reqResSet.getDate("expectedReturnDate");
-						userId = reqResSet.getInt("id");
-						boodId = reqResSet.getInt("bookid");
+					if (returnedDate != null) {
+						finePstmt.setDate(1, returnedDate);
+						finePstmt.setDate(2, expectedReturnedDate);
+						finePstmt.setInt(3, requestId);
 
-						if (returnedDate != null) {
-							fineStmt.setDate(1, returnedDate);
-							fineStmt.setDate(2, expectedReturnedDate);
-							fineStmt.setInt(3, requestId);
-
-							try (ResultSet fineResSet = fineStmt.executeQuery();) {
-								while (fineResSet.next()) {
-									noOfDaysDelayed = fineResSet.getInt(1);
-								}
+						try (ResultSet fineResSet = finePstmt.executeQuery();) {
+							while (fineResSet.next()) {
+								noOfDaysDelayed = fineResSet.getInt(1);
 							}
-
-							if (noOfDaysDelayed > 0) {
-								fine = noOfDaysDelayed * 5;
-
-								setFineStmt.setInt(1, fine);
-								setFineStmt.setInt(2, userId);
-								setFineStmt.executeUpdate();
-							}
-
-							// Make available in libaray books
-							setBookAvailStmt.setInt(1, boodId);
-							setBookAvailStmt.executeUpdate();
-
-							// set No Of Books Borrowed
-							setNoOfBooksStmt.setInt(1, userId);
-							setNoOfBooksStmt.executeUpdate();
-
-							removeReqStmt.setInt(1, requestId);
-							removeReqStmt.executeUpdate();
-
-							return true;
-
-						}else {
-							throw new LMSException("Book Not Yet Returned, So You Can't Receive");
 						}
 
-					} // End Of While Loop
+						if (noOfDaysDelayed > 0) {
+							fine = noOfDaysDelayed * 5;
+
+							setFinePstmt.setInt(1, fine);
+							setFinePstmt.setInt(2, userId);
+							setFinePstmt.executeUpdate();
+						}
+						bookAvailabilityPstmt.setInt(1, boodId);
+						bookAvailabilityPstmt.executeUpdate();
+						noOfBooksPstmt.setInt(1, userId);
+						noOfBooksPstmt.executeUpdate();
+						removeRequest.setInt(1, requestId);
+						removeRequest.executeUpdate();
+
+						return true;
+
+					} else {
+						throw new LMSException("Book Not Yet Returned, So You Can't Receive");
+					}
 
 				}
 
-				throw new LMSException("Invalid Request Id");
+			}
 
-			} // End of connection resource
+			throw new LMSException("Invalid Request Id");
 
 		} catch (Exception e) {
 			throw new LMSException(e.getMessage());
 		}
 
-
-			}
+	}
 
 }

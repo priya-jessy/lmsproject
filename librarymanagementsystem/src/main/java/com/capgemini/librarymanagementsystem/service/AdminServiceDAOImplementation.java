@@ -3,9 +3,8 @@ package com.capgemini.librarymanagementsystem.service;
 import java.util.List;
 
 import com.capgemini.librarymanagementsystem.dao.AdminDAO;
-import com.capgemini.librarymanagementsystem.dto.AdminBean;
 import com.capgemini.librarymanagementsystem.dto.BookBean;
-import com.capgemini.librarymanagementsystem.dto.RequestInfo;
+import com.capgemini.librarymanagementsystem.dto.RequestBean;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
 import com.capgemini.librarymanagementsystem.factory.LibraryManagementSystemFactory;
 
@@ -49,21 +48,21 @@ public class AdminServiceDAOImplementation implements AdminServiceDAO {
 	}
 
 	@Override
-	public List<UserBean> showUsers() {
+	public List<UserBean> getAllUsers() {
 
-		return dao.showUsers();
+		return dao.getAllUsers();
 	}
 
 	@Override
-	public List<BookBean> showBooks() {
+	public List<BookBean> getAllBooks() {
 
-		return dao.showBooks();
+		return dao.getAllBooks();
 	}
 
 	@Override
-	public List<RequestInfo> showRequests() {
+	public List<RequestBean> getAllRequests() {
 
-		return dao.showRequests();
+		return dao.getAllRequests();
 	}
 
 	@Override

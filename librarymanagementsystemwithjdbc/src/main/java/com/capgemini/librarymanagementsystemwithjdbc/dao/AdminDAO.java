@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.capgemini.librarymanagementsystemwithjdbc.dto.BookBean;
 import com.capgemini.librarymanagementsystemwithjdbc.dto.LibraryUserBean;
-import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestInfo;
+import com.capgemini.librarymanagementsystemwithjdbc.dto.RequestBean;
 
 public interface AdminDAO {
 
@@ -18,13 +18,13 @@ public interface AdminDAO {
 
 	BookBean searchBook(int bookId);
 
-	List<LibraryUserBean> showUsers();
+	List<LibraryUserBean> getAllUsers();
 
-	List<BookBean> showBooks();
+	List<BookBean> getAllBooks();
 
-	List<RequestInfo> showRequests();
+	List<RequestBean> getAllRequests();
 
-	boolean bookIssue(int requestId);
+	boolean isBookIssued(int requestId);
 
 	boolean isBookReceived(int requestId);
 

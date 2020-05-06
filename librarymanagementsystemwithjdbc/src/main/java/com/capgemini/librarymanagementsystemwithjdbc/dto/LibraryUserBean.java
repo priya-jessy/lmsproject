@@ -1,6 +1,8 @@
 package com.capgemini.librarymanagementsystemwithjdbc.dto;
 
-public class LibraryUserBean {
+import java.io.Serializable;
+
+public class LibraryUserBean implements Serializable  {
 	private int id;
 	private String userName;
 	private String firstName;

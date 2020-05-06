@@ -1,9 +1,7 @@
 package com.capgemini.librarymanagementsystem.service;
 
 import com.capgemini.librarymanagementsystem.dao.UserDAO;
-import com.capgemini.librarymanagementsystem.database.LibraryManagementSystemDataBase;
 import com.capgemini.librarymanagementsystem.dto.BookBean;
-import com.capgemini.librarymanagementsystem.dto.RequestInfo;
 import com.capgemini.librarymanagementsystem.dto.UserBean;
 import com.capgemini.librarymanagementsystem.factory.LibraryManagementSystemFactory;
 
