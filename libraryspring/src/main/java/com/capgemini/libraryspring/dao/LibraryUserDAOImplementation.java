@@ -1,4 +1,4 @@
-package com.capgemini.librarymanagementsystemhibernate.dao;
+package com.capgemini.libraryspring.dao;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -8,34 +8,40 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import com.capgemini.librarymanagementsystemhibernate.dto.BookBean;
-import com.capgemini.librarymanagementsystemhibernate.dto.RequestBean;
-import com.capgemini.librarymanagementsystemhibernate.exception.LibraryManagementSystemException;
-import com.capgemini.librarymanagementsystemhibernate.dto.LibraryUserBean;
+import org.springframework.stereotype.Repository;
 
+import com.capgemini.libraryspring.dto.BookBean;
+import com.capgemini.libraryspring.dto.LibraryUserBean;
+import com.capgemini.libraryspring.dto.RequestBean;
+import com.capgemini.libraryspring.exception.LibraryManagementSystemException;
+
+
+@Repository
 public class LibraryUserDAOImplementation implements LibraryUserDAO {
-
-	EntityManagerFactory factory = null;
+	@PersistenceUnit
+	private EntityManagerFactory factory;
 
 	@Override
 	public LibraryUserBean login(String emailId, String password) {
 		EntityManager manager = null;
-		factory = Persistence.createEntityManagerFactory("TestPersistence");
+		try {
+		factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 		manager = factory.createEntityManager();
 		String query = "select a from LibraryUserBean a where a.emailId = :emailId and a.password =:password";
 		TypedQuery<LibraryUserBean> adminInfo = manager.createQuery(query, LibraryUserBean.class);
 		adminInfo.setParameter("emailId", emailId);
 		adminInfo.setParameter("password", password);
-		try {
-			return adminInfo.getSingleResult();
+		LibraryUserBean bean=adminInfo.getSingleResult();
+			return bean;
 		} catch (Exception e) {
 			throw new LibraryManagementSystemException("Invalid Login Credentials");
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 	}
 
@@ -46,7 +52,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 		String jpql = null;
 		boolean flag = false;
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			jpql = "select r from LibraryUserBean r ";
 			TypedQuery<LibraryUserBean> query = manager.createQuery(jpql, LibraryUserBean.class);
@@ -72,7 +78,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 	}
 
@@ -81,7 +87,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		EntityManager manager = null;
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			String jpql = "select m from LibraryUserBean m";
 			TypedQuery<LibraryUserBean> query = manager.createQuery(jpql, LibraryUserBean.class);
@@ -95,7 +101,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 	}
 
@@ -104,7 +110,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 		EntityManager manager = null;
 		EntityTransaction transaction = null;
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 			transaction.begin();
@@ -116,7 +122,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException("Book is already added");
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 	}
 
@@ -125,7 +131,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		EntityManager manager = null;
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			BookBean search = manager.find(BookBean.class, bookId);
 			if (search == null) {
@@ -137,7 +143,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 	}
 
@@ -145,7 +151,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 	public List<BookBean> viewBooks() {
 		EntityManager manager = null;
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			String jpql = "select b from BookBean b";
 			TypedQuery<BookBean> query = manager.createQuery(jpql, BookBean.class);
@@ -159,7 +165,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 	}
 
@@ -167,7 +173,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 	public List<RequestBean> viewRequests() {
 		EntityManager manager = null;
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			String jpql = "select m from RequestBean m";
 			TypedQuery<RequestBean> query = manager.createQuery(jpql, RequestBean.class);
@@ -181,14 +187,14 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 
 	}
 
 	@Override
 	public boolean issueBook(int rid) {
-
+		EntityManagerFactory factory = null;
 		EntityManager manager = null;
 		EntityTransaction transaction = null;
 
@@ -207,7 +213,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 		expectedReturnDate = calendar.getTime();
 
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 
@@ -250,7 +256,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 
 		return true;
@@ -261,7 +267,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 		EntityManager manager = null;
 		EntityTransaction transaction = null;
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 			transaction.begin();
@@ -274,14 +280,14 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException("Book can't be removed");
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 
 	}
 
 	@Override
 	public boolean receivedBook(int requestId) {
-
+		EntityManagerFactory factory = null;
 		EntityManager manager = null;
 		EntityTransaction transaction = null;
 
@@ -298,7 +304,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 		Date returnedDate = null;
 
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 
@@ -351,7 +357,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 		return true;
 	}
@@ -366,10 +372,10 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		String jpql = null;
 		int noOfReq = 0;
-		boolean flag = false;
+//		boolean flag = false;
 
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 
@@ -377,6 +383,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			Query query = manager.createQuery(jpql);
 			query.setParameter("id", id);
 			noOfReq = ((Number) query.getSingleResult()).intValue();
+			System.out.println("no of req placed" + noOfReq);
 
 			if (noOfReq < 3) {
 				bookInfo = manager.find(BookBean.class, bookId);
@@ -394,7 +401,6 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 					}
 
 					if (bookInfo.isAvaliable()) {
-						System.out.println("tans started");
 						transaction.begin();
 						info.setId(id);
 						info.setBookId(bookId);
@@ -443,7 +449,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 		Date returnedDate = calendar2.getTime();
 
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 
@@ -477,7 +483,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 
 		return true;
@@ -494,7 +500,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 		String password = null;
 
 		try {
-			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
 			manager = factory.createEntityManager();
 			transaction = manager.getTransaction();
 
@@ -511,7 +517,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 			throw new LibraryManagementSystemException(e.getMessage());
 		} finally {
 			manager.close();
-			factory.close();
+
 		}
 		return true;
 	}
