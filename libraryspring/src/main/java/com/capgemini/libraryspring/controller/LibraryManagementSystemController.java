@@ -170,9 +170,9 @@ public class LibraryManagementSystemController {
 	@GetMapping(path = "/returnBook/{id}/{bookId}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
 	public LibraryResponse returnBook(@PathVariable(name = "id") int id, @PathVariable(name = "bookId") int bookId) {
-		boolean isRequested = libraryUserService.bookReturn(id, bookId);
+		boolean isReturned = libraryUserService.bookReturn(id, bookId);
 		LibraryResponse response = new LibraryResponse();
-		if (isRequested) {
+		if (isReturned) {
 			response.setMessage("Book returned To Admin Successfully");
 		} else {
 			response.setError(true);
@@ -184,10 +184,10 @@ public class LibraryManagementSystemController {
 	@GetMapping(path = "/receiveBook/{rId}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
 	public LibraryResponse receiveBook(@PathVariable(name = "rId") int rId) {
-		boolean isIssued = libraryUserService.receivedBook(rId);
+		boolean isReceived = libraryUserService.receivedBook(rId);
 
 		LibraryResponse response = new LibraryResponse();
-		if (isIssued) {
+		if (isReceived) {
 			response.setMessage("Book Received Successfully");
 		} else {
 			response.setError(true);
