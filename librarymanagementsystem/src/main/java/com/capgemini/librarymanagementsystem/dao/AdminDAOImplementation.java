@@ -68,8 +68,8 @@ public class AdminDAOImplementation implements AdminDAO {
 	@Override
 	public boolean addUser(UserBean userBean) {
 		for (UserBean userInfo : LibraryManagementSystemDataBase.users) {
-			if ((userInfo.getUserid() == userBean.getUserid())) {
-				throw new LibraryManagementSystemException("User with same id is already registered in library");
+			if ((userInfo.getUserid() == userBean.getUserid()) || userInfo.getEmail().equalsIgnoreCase(userBean.getEmail())) {
+				throw new LibraryManagementSystemException("User with same EmailId is already registered in library");
 
 			}
 

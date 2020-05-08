@@ -44,19 +44,19 @@ public class AdminServiceImplementation implements AdminService {
 	}
 
 	@Override
-	public List<LibraryUserBean> showUsers() {
+	public List<LibraryUserBean> getAllUsers() {
 
 		return dao.getAllUsers();
 	}
 
 	@Override
-	public List<BookBean> showBooks() {
+	public List<BookBean> getAllBooks() {
 
 		return dao.getAllBooks();
 	}
 
 	@Override
-	public List<RequestBean> showRequests() {
+	public List<RequestBean> getAllRequests() {
 
 		return dao.getAllRequests();
 	}

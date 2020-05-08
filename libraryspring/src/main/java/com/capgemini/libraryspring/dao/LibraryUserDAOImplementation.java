@@ -19,7 +19,6 @@ import com.capgemini.libraryspring.dto.LibraryUserBean;
 import com.capgemini.libraryspring.dto.RequestBean;
 import com.capgemini.libraryspring.exception.LibraryManagementSystemException;
 
-
 @Repository
 public class LibraryUserDAOImplementation implements LibraryUserDAO {
 	@PersistenceUnit
@@ -29,13 +28,13 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 	public LibraryUserBean login(String emailId, String password) {
 		EntityManager manager = null;
 		try {
-		factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
-		manager = factory.createEntityManager();
-		String query = "select a from LibraryUserBean a where a.emailId = :emailId and a.password =:password";
-		TypedQuery<LibraryUserBean> adminInfo = manager.createQuery(query, LibraryUserBean.class);
-		adminInfo.setParameter("emailId", emailId);
-		adminInfo.setParameter("password", password);
-		LibraryUserBean bean=adminInfo.getSingleResult();
+			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
+			manager = factory.createEntityManager();
+			String query = "select a from LibraryUserBean a where a.emailId = :emailId and a.password =:password";
+			TypedQuery<LibraryUserBean> adminInfo = manager.createQuery(query, LibraryUserBean.class);
+			adminInfo.setParameter("emailId", emailId);
+			adminInfo.setParameter("password", password);
+			LibraryUserBean bean = adminInfo.getSingleResult();
 			return bean;
 		} catch (Exception e) {
 			throw new LibraryManagementSystemException("Invalid Login Credentials");
@@ -372,7 +371,7 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		String jpql = null;
 		int noOfReq = 0;
-//		boolean flag = false;
+		// boolean flag = false;
 
 		try {
 			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
@@ -488,38 +487,6 @@ public class LibraryUserDAOImplementation implements LibraryUserDAO {
 
 		return true;
 
-	}
-
-	@Override
-	public boolean changePassword(int id, String oldPassword, String newPassword) {
-		EntityManagerFactory factory = null;
-		EntityManager manager = null;
-		EntityTransaction transaction = null;
-
-		LibraryUserBean user = new LibraryUserBean();
-		String password = null;
-
-		try {
-			factory = Persistence.createEntityManagerFactory("lmsPersistenceUnit");
-			manager = factory.createEntityManager();
-			transaction = manager.getTransaction();
-
-			transaction.begin();
-			user = manager.find(LibraryUserBean.class, id);
-			password = user.getPassword();
-			if (password.equals(oldPassword)) {
-				user.setPassword(newPassword);
-				transaction.commit();
-			} else {
-				throw new LibraryManagementSystemException("Invalid Password");
-			}
-		} catch (LibraryManagementSystemException e) {
-			throw new LibraryManagementSystemException(e.getMessage());
-		} finally {
-			manager.close();
-
-		}
-		return true;
 	}
 
 }

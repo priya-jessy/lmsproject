@@ -88,10 +88,6 @@ public class LibraryUserServiceImplementation implements LibraryUserService {
 		return dao.bookReturn(userId, bookId);
 	}
 
-	@Override
-	public boolean changePassword(int id, String oldPassword, String newPassword) {
-
-		return dao.changePassword(id, oldPassword, newPassword);
-	}
+	
 
 }

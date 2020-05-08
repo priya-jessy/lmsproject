@@ -393,7 +393,7 @@ public class LibraryManagementSystem {
 								case 4:
 									try {
 
-										List<BookBean> allBooks = adminService.showBooks();
+										List<BookBean> allBooks = adminService.getAllBooks();
 										System.out.println("Books present in library are :");
 										System.out.println(String.format("%-20s %-20s %-20s %-20s %-20s %-20s",
 												"BOOKID", "BOOKNAME", "AUTHOR", "PUBLISHER", "CATEGORY", "AVALIABLE"));
@@ -414,7 +414,7 @@ public class LibraryManagementSystem {
 										System.out.println("users in library are :");
 										System.out.println("-------------------------------");
 
-										List<LibraryUserBean> allUsers = adminService.showUsers();
+										List<LibraryUserBean> allUsers = adminService.getAllUsers();
 										System.out.println("Users of Library are :");
 										System.out.println(String.format("%-5s %-10s %-10s %-10s %-30s %-30s %-10s",
 												"USERId", "USERNAME", "FIRSTNAME", "LASTNAME", "EMAILID",
@@ -461,7 +461,7 @@ public class LibraryManagementSystem {
 								case 7:
 									try {
 
-										List<RequestBean> requestInfos = adminService.showRequests();
+										List<RequestBean> requestInfos = adminService.getAllRequests();
 										System.out.println("Requests for Books are :");
 										System.out.println(String.format("%-10s %-10s %-10s %-20s %-25s %-25s",
 												"REQUESTID", "USER ID", "BOOK ID", "ISSUE DATE", "EXPECTED RETURN DATE",
@@ -628,7 +628,7 @@ public class LibraryManagementSystem {
 								case 2:
 									try {
 
-										List<BookBean> allBooks = adminService.showBooks();
+										List<BookBean> allBooks = adminService.getAllBooks();
 										System.out.println("Books present in library are :");
 										System.out.println(String.format("%-20s %-20s %-20s %-20s %-20s %-20s",
 												"BOOKID", "BOOKNAME", "AUTHOR", "PUBLISHER", "CATEGORY", "AVALIABLE"));

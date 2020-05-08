@@ -32,6 +32,6 @@ public interface LibraryUserDAO {
 
 	boolean bookReturn(int userId, int bookId);
 
-	boolean changePassword(int id, String oldPassword, String newPassword);
+	
 
 }

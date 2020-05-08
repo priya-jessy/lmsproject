@@ -6,7 +6,7 @@ public class LmsController {
 	public static void main(String[] args) {
 		LibraryManagementSystemDataBase.addToDatabase();
 		LibraryManagementSystem.lmsController();
-		
+
 	}
 
 }

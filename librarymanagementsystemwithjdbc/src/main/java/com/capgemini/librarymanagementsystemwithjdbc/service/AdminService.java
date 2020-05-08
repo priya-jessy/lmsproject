@@ -18,11 +18,11 @@ public interface AdminService {
 
 	BookBean searchBook(int bookId);
 
-	List<LibraryUserBean> showUsers();
+	List<LibraryUserBean> getAllUsers();
 
-	List<BookBean> showBooks();
+	List<BookBean> getAllBooks();
 
-	List<RequestBean> showRequests();
+	List<RequestBean> getAllRequests();
 
 	boolean isBookIssued(int requestId);
 
