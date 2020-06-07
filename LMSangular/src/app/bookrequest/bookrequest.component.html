@@ -1,0 +1,41 @@
+<div class="image">
+  <div class="alert alert-success" *ngIf='message'>{{message}}</div>
+  <br>
+  <br>
+  <div class="col-md-4 offset-4 mt-4">
+    <div class="card text-dark bg-light mb-3">
+      <div class="card-body">
+        <h4 class="text-center">Book Request</h4>
+
+        <form #requestForm='ngForm' (ngSubmit)='postReq(requestForm)'>
+          <div class="form-group">
+            <label for="id">User Id</label>
+            <input type="text" name="id" id="id" #id='ngModel' ngModel class="form-control" required
+              pattern="^[1-9]{1}[0-9]{0,}$">
+            <div *ngIf='id.touched && id.invalid'>
+              <div class="text-danger" *ngIf='id.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='id.errors.pattern'>User Id Should contain Only Digits
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="bookId">Book Id</label>
+            <input type="text" name="bookId" id="bookId" #bookId='ngModel' ngModel class="form-control" required
+              pattern="^[1-9]{1}[0-9]{0,}$">
+            <div *ngIf='bookId.touched && bookId.invalid'>
+              <div class="text-danger" *ngIf='bookId.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='bookId.errors.pattern'>Book Id Should contain Only Digits
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-danger float-right" [disabled]=requestForm.invalid>Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.image{
+    height: 40em;background-size: cover; width: auto;
+    background-image: url('https://cdn.pixabay.com/photo/2018/07/17/14/43/banner-3544296__340.jpg');
+    background-position: 50% 50%;
+}
+.card {
+    border-radius: 2px;
+    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    border: black;
+    border-width: solid;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    border-color:rgb(2, 219, 240);
+    border-style: groove;
+    border-radius: 20px;
+    background-color: rgb(166, 219, 240);
+}

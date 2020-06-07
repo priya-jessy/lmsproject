@@ -1,0 +1,28 @@
+<div class="image">
+  <div class="alert alert-success" *ngIf='message'>{{message}}</div>
+  <br>
+  <br>
+  <div class="col-md-4 offset-4 mt-4">
+    <div class="card text-dark bg-light mb-3">
+      <div class="card-body">
+        <h4 class="text-center">BookIssue</h4>
+
+        <form #issueForm='ngForm' (ngSubmit)='postIssue(issueForm)'>
+          <div class="form-group">
+            <label for="rId">REQUESTId</label>
+            <input type="text" name="rId" id="rId" #rId='ngModel' ngModel class="form-control" required
+              pattern="^[1-9]{1}[0-9]{0,}$">
+            <div *ngIf='rId.touched && rId.invalid'>
+              <div class="text-danger" *ngIf='rId.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='rId.errors.pattern'>RequestId Should contain Only Digits
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-danger float-right" [disabled]=issueForm.invalid>Issue</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="image">
+    <div class="alert alert-success" *ngIf='message'>{{message}}</div>
+    <div class="container mt-4">
+        <div class="input-group md-form form-sm form-2 pl-0">
+            <input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" [(ngModel)]="searchText"
+                aria-label="Search">
+            <div class="input-group-append">
+                <span class="input-group-text red lighten-3" id="basic-text1"><i class="fas fa-search text-grey"
+                        aria-hidden="true"></i></span>
+            </div>
+        <!-- </div> -->
+
+        <select class="selectpicker widith ='50%' float-right" id="inputGroupSelect01" [(ngModel)]="fieldName">
+            <option value="category">Category</option>>
+            <option value="bookName" selected>BookName</option>
+            <option value="author">authorName</option>
+            <option value="bookId">BookId</option>
+        </select>
+    </div>
+        <br>
+        <br>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>BOOKID</th>
+                    <th>BOOKNAME</th>
+                    <th>AUTHOR</th>
+                    <th>PUBLISHER</th>
+                    <th>CATEGORY</th>
+                    <th>BOOK AVAILABILITY</th>
+                    <th *ngIf="isAdminLogin">UPDATE </th>
+                    <th *ngIf="isAdminLogin">DELETE</th>
+                    <th *ngIf="isUserLogin">REQUEST</th>
+                    <th *ngIf="isUserLogin">RETURN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let book of books|searchBook:searchText:fieldName'>
+                    <td>{{book.bookId}}</td>
+                    <td>{{book.bookName}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.publisher}}</td>
+                    <td>{{book.category}}</td>
+                    <td>{{book.isAvaliable}}</td>
+                    <td *ngIf="isAdminLogin"><button class="btn btn-outline-secondary " (click)='updateBook(book)'>Update</button>
+                    </td>
+                    <td *ngIf="isAdminLogin"><button class="btn btn-outline-secondary"
+                            (click)='deleteBook(book)'>Delete</button></td>
+                    <td *ngIf="isUserLogin"><button class="btn btn-danger " (click)='postReq(book)'>Request</button>
+                    </td>
+                    <td *ngIf="isUserLogin"><button class="btn btn-outline-secondary" (click)='postReturnBook(book)'>Return</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

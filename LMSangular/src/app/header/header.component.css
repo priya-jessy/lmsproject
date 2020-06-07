@@ -1,0 +1,11 @@
+.image{
+    height: 40em;background-size: cover; width: auto;
+    background-image: url('https://cdn.pixabay.com/photo/2018/07/17/14/43/banner-3544296__340.jpg');
+    background-position: 50% 50%;
+}
+nav{
+    background-color:#184E68
+}
+button{
+    Text-decoration:none;
+    }

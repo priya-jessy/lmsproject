@@ -1,0 +1,72 @@
+<div class="image">
+  <div class="alert alert-success" *ngIf='message'>{{message}}</div>
+  <br>
+  <div class="col-md-4 offset-4 mt-4">
+    <div class="card text-dark bg-light mb-3">
+      <div class="card-body">
+        <h4 class="text-center">Add Book</h4>
+
+        <form #addBookForm='ngForm' (ngSubmit)='postaddBook(addBookForm)'>
+          <div class="form-group">
+            <label for="bookName">Book Name</label>
+            <input type="bookName" name="bookName" id="bookName" #bookName='ngModel' ngModel class="form-control"
+              required pattern="^[a-zA-Z ]{2,}$">
+            <div *ngIf='bookName.touched && bookName.invalid'>
+              <div class="text-danger" *ngIf='bookName.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='bookName.errors.pattern'>Name Should contain Only Alphabets
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="author">Book Authour</label>
+            <input type="text" name="author" id="author" #author='ngModel' ngModel class="form-control" required
+              pattern="^[a-zA-Z ]{2,}$">
+            <div *ngIf='author.touched && author.invalid'>
+              <div class="text-danger" *ngIf='author.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='author.errors.pattern'>Name Should contain Only Alphabets
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" name="category" id="category" #category='ngModel' ngModel class="form-control" required
+              pattern="^[a-zA-Z ]{2,}$">
+            <div *ngIf='category.touched && category.invalid'>
+              <div class="text-danger" *ngIf='category.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='category.errors.pattern'>Name Should contain Only Alphabets
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="publisher">Publisher</label>
+            <input type="text" name="publisher" id="publisher" #publisher='ngModel' ngModel class="form-control"
+              required pattern="^[a-zA-Z ]{2,}$">
+            <div *ngIf='publisher.touched && publisher.invalid'>
+              <div class="text-danger" *ngIf='publisher.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='publisher.errors.pattern'>Name Should contain Only Alphabets
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="isAvaliable">Book Availability</label>
+            <select name="isAvaliable" id="isAvaliable" #isAvaliable='ngModel' ngModel class="form-control" required>
+              <option value="True">True</option>
+              <option value="False">False</option>
+            </select>
+          </div><br>
+
+          <button type="submit" class="btn btn-primary float-right" [disabled]=addBookForm.invalid>Add Book</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

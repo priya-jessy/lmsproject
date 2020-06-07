@@ -1,0 +1,29 @@
+<div class="image">
+<div class="container mt-4">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>REQUESTID</th>
+                <th>USERID</th>
+                <th>BOOKID</th>
+                <th>ISSUED DATE</th>
+                <th>RETURNED DATE</th>
+                <th>EXPECTED RETURNED DATE</th>
+                <th>RECEIVE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let request of requests'>
+                <td>{{request.rId}}</td>
+                <td>{{request.id}}</td>
+                <td>{{request.bookId}}</td>
+                <td>{{request.issueDate}}</td>
+                <td>{{request.returnedDate}}</td>
+                <td>{{request.expectedReturnDate}}</td>
+                <td *ngIf = "isAdminLogin"><button class="btn btn-outline-warning" (click)='postReceiveBook(request)'>Receive </button></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+</div>

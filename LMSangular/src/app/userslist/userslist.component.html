@@ -1,0 +1,28 @@
+<div class="image">
+<div class="container mt-4">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>NUMBER OF BOOKS BORROWED</th>
+                <th>FINE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let user of users'>
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.emailId}}</td>
+                <td>{{user.role}}</td>
+                <td>{{user.noOfBooksBorrowed}}</td>
+                <td>{{user.fine}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
+</div>

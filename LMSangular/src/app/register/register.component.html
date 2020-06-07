@@ -1,0 +1,66 @@
+<div class="image">
+  <div class="alert alert-success" *ngIf='message'>{{message}}</div>
+  <br>
+  <br>
+<div class="col-md-4 offset-4 mt-4">
+  <div class="card text-dark bg-light mb-3">
+    <div class="card-body">
+      <h4 class="text-center">Register</h4>
+
+      <form #addUserForm='ngForm' (ngSubmit)='postUser(addUserForm)'>
+        <div class="form-group">
+          <label for="name">User Name</label>
+          <input type="text" name="name" id="name" #name='ngModel' ngModel class="form-control" required
+            pattern="^[a-zA-Z ]{2,30}$">
+          <div *ngIf='name.touched && name.invalid'>
+            <div class="text-danger" *ngIf='name.errors.required'>
+              *This field is mandatory
+            </div>
+            <div class="text-danger" *ngIf='name.errors.pattern'>Name Should contain Only Alphabets
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="emailId">Email Id</label>
+          <input type="email" name="emailId" id="emailId" #emailId='ngModel' ngModel class="form-control" required email
+            minlength="10">
+          <div *ngIf='emailId.touched && emailId.invalid' required email
+            pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,}">
+            <div *ngIf='emailId.touched && emailId.invalid'>
+              <div class="text-danger" *ngIf='emailId.errors.required'>
+                *This field is mandatory
+              </div>
+              <div class="text-danger" *ngIf='emailId.errors.pattern'>
+                Please enter a Valid Email Address
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" #password='ngModel' ngModel class="form-control" required
+            minlength="8" pattern="^[A-Za-z\d$@$!%*#?&]{8,}">
+          <div *ngIf='password.touched && password.invalid'>
+            <div class="text-danger" *ngIf='password.errors.required'>*This Field is Mandatory</div>
+            <div *ngIf=password.errors.pattern>
+              <div class="text-danger">Password should be atleast 8 characters long</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select name="role" id="role" #role='ngModel' ngModel class="form-control">
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary float-right" [disabled]=addUserForm.invalid>Register</button>
+    <!-- </div> -->
+    </form>
+  </div>
+</div>

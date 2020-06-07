@@ -1,0 +1,24 @@
+<div class="image">
+    <div class="container mt-4">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>REQUESTID</th>
+                    <th>USERID</th>
+                    <th>BOOKID</th>
+                    <th>ISSUE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let request of requests'>
+                    <td>{{request.rId}}</td>
+                    <td>{{request.id}}</td>
+                    <td>{{request.bookId}}</td>
+                    <td><button class="btn btn-outline-dark"
+                        (click)='issueBook(request)'>ISSUE</button></td>
+                </tr>
+            </tbody>
+        </table>
+    
+    </div>
+    </div>

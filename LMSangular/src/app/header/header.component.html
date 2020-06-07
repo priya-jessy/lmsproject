@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-lg navbar-dark purple-gradient">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/"><i class="fas fa-home"></i>Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active" *ngIf="libraryService.isNotLoggedIn()">
+        <a class="nav-link" routerLink="/about"><i class="fas fa-question"></i>About</a>
+      </li>
+      <li class="nav-item active" *ngIf="libraryService.isNotLoggedIn()">
+        <a class="nav-link" routerLink="/contactus"><i class="fas fa-phone-alt"></i>Contact Us</a>
+      </li>
+      <li class="nav-item " *ngIf="libraryService.isAdmin()">
+        <a class="nav-link" routerLink="/register"><i class="fas fa-registered"></i>Add User</a>
+      </li>
+      <li class="nav-item " *ngIf="libraryService.isAdmin()">
+        <a class="nav-link" routerLink="/addbook"><i class="fas fa-book"></i>Add Book</a>
+      </li>
+      <li class="nav-item " *ngIf="libraryService.isAdmin()">
+        <a class="nav-link" routerLink="/booklist"><i class="far fa-list-alt"></i>Show All Books</a>
+      </li>
+      <li class="nav-item " *ngIf="libraryService.isAdmin()">
+        <a class="nav-link" routerLink="/userslist"><i class="fas fa-users"></i>Show All Users</a>
+      </li>
+      <li class="nav-item " *ngIf="libraryService.isAdmin()">
+        <a class="nav-link" routerLink="/requestlist"><i class="fas fa-list"></i>Request List</a>
+      </li>
+      <li class="nav-item " *ngIf="libraryService.isAdmin()">
+        <a class="nav-link" routerLink="/requestedbooks">Requested Books</a>
+      </li>
+      <li class="nav-item " *ngIf="libraryService.isUser()">
+        <a class="nav-link" routerLink="/booklist"><i class="fas fa-book"></i>show All books</a>
+      </li>
+    </ul>
+    <div class="navbar-nav ">
+      <form class="form-inline">
+        <button class="btn btn-default" *ngIf="libraryService.isNotLoggedIn()">
+          <a class="btn-link" [routerLink]="['/login']"><i class="fas fa-sign-in-alt"></i>Login</a>
+        </button><br>
+        <button class="btn btn-default " *ngIf="libraryService.isLoggedIn()">
+          <a class="btn-link" (click)="this.logoutClick()" routerLink="/login">Logout<i class="fas fa-sign-out-alt"></i></a>
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+</nav>
+
+
+
+<router-outlet></router-outlet>

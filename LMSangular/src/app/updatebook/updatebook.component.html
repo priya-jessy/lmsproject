@@ -1,0 +1,61 @@
+<div class="alert alert-success" *ngIf='message'>{{message}}</div>
+<div class="col-md-4 offset-4 mt-4">
+    <div class="card text-danger bg-light mb-3">
+        <div class="card-body">
+            <h2 class="text-center">Update Book</h2>
+            <form #updateForm='ngForm' (ngSubmit)='postUpdate(updateForm)'>
+
+
+                <div class="form-group">
+                    <label for="bookId">Book Id</label>
+                    <input type="text" name="bookId" id="bookId" [(ngModel)]='bookId' class="form-control" required
+                        pattern="^[a-zA-Z ]{1,}$">
+
+
+                </div>
+
+                <div class="form-group">
+                    <label for="bookName">Book Name</label>
+                    <input type="text" name="bookName" id="bookName" [(ngModel)]='bookName' class="form-control"
+                        required pattern="^[a-zA-Z ]{1,}$">
+
+
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Author Name</label>
+                    <input type="text" name="author" id="author" [(ngModel)]='author' class="form-control" required
+                        pattern="^[a-zA-Z ]{1,}$">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="publisher">Publisher</label>
+                    <input type="text" name="publisher" id="publisher" [(ngModel)]='publisher' class="form-control"
+                        required pattern="^[a-zA-Z ]{1,}$">
+
+                </div>
+
+
+                <div class="form-group">
+                    <label for="category">Author Name</label>
+                    <input type="text" name="category" id="category" [(ngModel)]='category' class="form-control"
+                        required pattern="^[a-zA-Z ]{1,}$">
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="isAvaliable">Book Availability</label>
+                    <select name="isAvaliable" id="isAvaliable" [(ngModel)]='isAvaliable' class="form-control" required>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div><br>
+
+                <button class="btn btn-danger float-right">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
